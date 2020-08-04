@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  div(data-role='page')
+    include ./includes/popups.jade
+
+    div(data-role='header')
+      a(href='/', class='ui-btn ui-btn-left')
+        i(class='fa fa-arrow-circle-left')
+      h1(style='text-align:center;')= title
+    div(data-role='content')
+      ul(data-role='listview', data-inset='false', data-icon='false')
+        each hk in homeKeys
+          li
+            - var validStr = ''
+            if (hk.validStart && ((new Date()) < (new Date(hk.validStart))))
+              - validStr = '   (not valid yet)'
+            else if (hk.expiration && ((new Date()) > (new Date(hk.expiration))))
+              - validStr = '   (expired)'
+            a(href='#', data-ajax='false', data-homeKeyId='#{hk.homeKeyId}', class='ui-btn ui-btn-inline editHomeKey') #{(hk.name ? hk.name : 'key: ' + hk.homeKeyId)}  #{validStr}
+      a(class='ui-btn ui-btn-icon-block shareKey', data-ajax='false') <i class='zmdi zmdi-key zmd-2x'></i>Create new key

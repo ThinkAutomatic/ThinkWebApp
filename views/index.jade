@@ -1,0 +1,118 @@
+extends layout
+
+block content
+  div(data-role='page', class='nd2-no-menu-swipe')
+    include ./includes/left.panel.jade
+    include ./includes/popups.jade
+
+    if cookies.homeId
+      div(data-role='panel', id='room-0-device-panel', class='ui-bottom-sheet ui-bottom-sheet-list', data-animate='false', data-position='bottom', data-display='overlay')
+        div(class='row around-xs')
+          if home.devices && home.devices.length
+            for device in home.devices
+              div(class='col-xs-auto')
+                a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.online ? '' : ' class=\'clr-grey\''}>#{device.name ? device.name : 'Unnamed Device'}</span>
+          else
+            div(class='col-xs-auto')
+              a(class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button')<span class=\'clr-grey\'>No devices unplaced in a room</span>
+
+      if home.rooms
+        for room in home.rooms
+          div(data-role='panel', id='room-#{room.roomId}-device-panel', class='ui-bottom-sheet ui-bottom-sheet-list', data-animate='false', data-position='bottom', data-display='overlay')
+            div(class='row around-xs')
+              if room.devices && room.devices.length
+                for device in room.devices
+                  div(class='col-xs-auto')
+                    a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.online ? '' : ' class=\'clr-grey\''}>#{device.name ? device.name : 'Unnamed Device'}</span>
+              else
+                div(class='col-xs-auto')
+                  a(class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button')<span class=\'clr-grey\'>No devices in #{room.name}</span>
+
+    div(data-role='header', data-position='inline')
+      a(href='#room-#{cookies.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-right showDevices')
+        i(class='zmdi zmdi-more-vert')
+      a(href='#leftpanel', class='ui-btn ui-btn-left')
+        i(class='zmdi zmdi-menu')
+      if cookies.edit && home && home.name
+        h1(class='wow fadeIn', data-wow-delay='0.4s', class='editHome', data-ajax='false', data-homeName=home.name)= home.name
+          i(class='fa fa-pencil-square-o editHome', style='padding-left:10px;', data-ajax='false', data-homeName=home.name) 
+      else
+        if homes.error
+          h1(class='wow fadeIn', data-wow-delay='0.4s') Attention
+            script.
+              new $.nd2Toast({ ttl: 30000, message : homes.error.message });
+        else
+          if homes.length
+            if (home && home.name)
+              h1(class='wow fadeIn', data-wow-delay='0.4s')=home.name
+            else
+              h1(class='wow fadeIn', data-wow-delay='0.4s') No home selected
+          else
+            h1(class='wow fadeIn', data-wow-delay='0.4s') No homes found
+
+      div(id='roomTabs')
+        ul(data-role='nd2tabs', data-swipe='false')
+          if home.rooms
+            for room in home.rooms
+              li(data-tab='room-#{room.roomId}', data-tab-active=(cookies.roomId == room.roomId ? 'true' : undefined), data-ajax='false', data-roomId=room.roomId, data-roomName=room.name)= room.name
+          li(data-tab='room-0', data-roomId='0', data-tab-active=(cookies.roomId == 0 ? 'true' : undefined), data-ajax='false') Other
+  
+    div(role='main', class='ui-content wow fadeIn', data-inset='false', data-wow-delay='0.2s')
+      if home.error
+        script.
+          new $.nd2Toast({ ttl: 8000, message : '#{home.error.description}' });
+
+      if homes.length > 0 && !homes.error
+        if cookies.homeId
+          if cookies.edit
+            a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room
+          else
+            input(type='text', data-roomName='', class='phraseVal', placeholder='Enter text command here...')
+
+          if home.newDevices
+            a(href='/devices/discover', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Show discovered device(s)            
+            script.
+              new $.nd2Toast({ ttl: 8000, message : "New device(s) discovered", action : { title : "show", link : "/devices/discover", color: "lime" } });
+
+          if home.rooms
+            for room in home.rooms
+              div(data-role='nd2tab', data-tab='room-#{room.roomId}')
+                if !cookies.edit
+                  if !(room.devices && room.devices.length) && cookies.userId
+                    a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add devices here</p>
+                if cookies.edit
+                  a(data-roomId='#{room.roomId}', data-roomName='#{room.name}', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices in #{room.name}
+                  a(href='#room-#{room.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit #{room.name} devices
+                  a(data-ajax='false', class='ui-btn ui-btn-icon-block editRoom', data-roomId=room.roomId, data-roomName=room.name) <i class='fa fa-pencil-square-o fa-2x'></i> <p>Rename #{room.name}</p>
+                  a(data-ajax='false', class='ui-btn ui-btn-icon-block deleteObject', data-path='rooms/#{room.roomId}', data-objectName=room.name) <i class='fa fa-trash fa-2x'></i> <p>Delete #{room.name}</p>
+                  a(href='/?edit=false', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-check fa-2x'></i> <p>Exit edit mode</p>
+                if cookies.edit || (room.devices && room.devices.length)
+                  form
+                    fieldset(data-role='controlgroup', data-type="vertical", data-mini="true")
+                      if room.scenes
+                        for scene in room.scenes
+                          if scene.name || (scene.sceneId == room.preferredSceneId) || (scene.sceneId == room.previousSceneId) || (scene.sceneId == room.currentSceneId) || (scene.level == 0) || (scene.level == 100)
+                            - var sceneName = (scene.name ? scene.name : (scene.autoName ? scene.autoName : '') + (cookies.edit ? ' (learned)' : ''))
+                            input(type='radio', class=(cookies.edit ? 'editScene sceneChoice' : 'sceneChoice'), name='scene-choice-room-#{room.roomId}', id='radio-scene-#{scene.sceneId}', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName, value='scene-#{scene.sceneId}', checked=(scene.sceneId == room.currentSceneId ? 'checked' : undefined))
+                            label(for='radio-scene-#{scene.sceneId}') <span style="font-size:3">#{sceneName} </span>
+                              span(class='clr-#{theme}', style='font-size:3')   (#{scene.level}%)
+                              if cookies.edit
+                                i(class='fa fa-pencil-square-o fa-2x editScene sceneChoice', style='padding-left:10px;', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName)
+                              else if room.preferredSceneId == scene.sceneId
+                                span(class='clr-#{theme}', style='font-size:3')   &lt;- [preferred]
+            div(data-role='nd2tab', data-tab='room-0')
+              if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
+                a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>
+              if cookies.edit
+                a(data-roomId='0', data-roomName='Other', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices not placed in a room
+                if home.devices && home.devices.length
+                  a(href='#room-0-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit devices not placed in a room
+                a(href='/?edit=false', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-check fa-2x'></i> <p>Exit edit mode</p>
+        else
+          a(href='#leftpanel', class='ui-btn ui-btn-icon-block selectHome') <i class='zmdi zmdi-home zmd-2x'></i>Select home
+      else
+        if cookies.userId
+          a(class='ui-btn ui-btn-icon-block newHome') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i>Add new home
+        else
+          a(href='/users/signin', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-sign-in fa-2x'></i> <p>Sign in to get started</p>
+

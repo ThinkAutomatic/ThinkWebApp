@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  div(data-role='page')
+    include ./includes/popups.jade
+
+    div(data-role='header')
+      a(href='/', class='ui-btn ui-btn-left')
+        i(class='fa fa-arrow-circle-left')
+      h1(style='text-align:center;')= title
+    div(data-role='content')
+      form(class='settingsForm', data-ajax='false', data-userId='#{user.userId}')
+        label(for='userName') Username:
+        input(type='text', id='userName', value='#{user.userName}')
+        label(for='emailAddress') Email:
+        input(type='text', data-ajax='false', name='emailAddress', id='emailAddress', value='#{user.emailAddress}')
+        label(for='password') Password:
+        input(type='password', id='password', pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$', title='Must contain at least one number, one uppercase letter, one lowercase letter, and at least 6 or more characters', placeholder='Leave blank to keep unchanged')
+        label(for='confirmPassword') Confirm password:
+        input(type='password', id='confirmPassword', placeholder='Leave blank to keep unchanged')
+        input(type='submit', data-ajax='false', value='Submit Changes')
+        a(href='/', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Cancel

@@ -1,0 +1,62 @@
+extends layout
+
+block content
+  div(data-role='page')
+    - var disabled = (deviceTypeInfo && deviceTypeInfo.ownerUserId ? (cookies.userId ? (deviceTypeInfo.ownerUserId != cookies.userId) : true) : false)
+    include ./includes/devicetypepopups.jade
+
+    div(data-role='header')
+      if cookies.userId
+        a(class='signoutButton', data-ajax='false', class='ui-btn ui-btn-right')
+          i(class='fa fa-sign-out')
+      else
+        a(href='/users/signin?editDeviceTypes=true', data-ajax='false', class='ui-btn ui-btn-right')
+          i(class='fa fa-sign-in')
+      a(data-ajax='false', class='ui-btn ui-btn-left deviceTypeEditorBack')
+        i(class='fa fa-arrow-circle-left')
+      h1(style='text-align:center;')= title
+    div(data-role='content')
+      div(id='deviceTypeElements')
+        if deviceTypeInfo
+          - var propCount = 0
+
+          if deviceTypeInfo['modes']
+            - propCount++
+            - var modeStr = JSON.stringify(deviceTypeInfo['modes'])
+            label(for='prop-' + propCount) modes:
+            input(data-ajax='false', type='text', data-propName='modes', name='prop-' + propCount, id='prop-' + propCount, value=modeStr, disabled=true)
+
+          each value, key in deviceTypeInfo
+            if key != 'actionTypes' && key != 'modes' && key != 'preLinkInstructions' && key != 'postLinkInstructions' && typeof(value) != 'boolean' && value != 'true' && value != 'false'              
+              - propCount++
+              label(for='prop-' + propCount) #{key}:
+              input(class='deviceTypeField', data-ajax='false', type='text', data-propName=key, name='prop-' + propCount, id='prop-' + propCount, value=value, disabled=(key == 'deviceTypeUuid' ? undefined : disabled))
+
+          label(for='prop-preLinkInstructions') preLinkInstructions:
+          textarea(class='deviceTypeField', data-ajax='false', id='prop-preLinkInstructions', data-propName='preLinkInstructions', name='prop-preLinkInstructions', disabled=disabled)=deviceTypeInfo.preLinkInstructions
+
+          label(for='prop-postLinkInstructions') postLinkInstructions:
+          textarea(class='deviceTypeField', data-ajax='false', id='prop-postLinkInstructions', data-propName='postLinkInstructions', name='prop-postLinkInstructions', disabled=disabled)=deviceTypeInfo.postLinkInstructions
+
+          each value, key in deviceTypeInfo
+            if typeof(value) == 'boolean' || value == 'true' || value == 'false'
+              if typeof(value) != 'boolean'
+                - value = (value == 'true')
+              - propCount++
+              input(class='deviceTypeField', data-ajax='false', type='checkbox', data-propName=key, name='prop-' + propCount, id='prop-' + propCount, checked=value, disabled=disabled)
+              label(for='prop-' + propCount)= key
+
+          if !disabled
+            a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='addDeviceTypeAttribute') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> <p>Add New Attribute to "#{deviceTypeInfo.name}"</p>
+            if !deviceTypeInfo.deviceTypeUuid
+              a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='addDeviceTypeAction') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> <p>Add New Action Type to "#{deviceTypeInfo.name}"</p>
+
+          if deviceTypeInfo.actionTypes
+            each actionType in deviceTypeInfo.actionTypes
+              a(data-ajax='false', class='ui-btn ui-btn-icon-block actionTypePopup', data-actionTypeName=actionType.name) <i class='fa fa-edit fa-2x'></i> <p>#{(disabled || deviceTypeInfo.deviceTypeUuid ? 'View' : 'Edit')} Action Type "#{actionType.name}"</p>
+
+          a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='editDeviceTypeSaveDraft') <i class='fa fa-save fa-2x'></i> <p>Save as Draft</p>
+
+          if !disabled
+            a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='editDeviceTypeRegister') <i class='zmdi zmdi-cloud-upload zmd-2x'></i> <p>Register "#{deviceTypeInfo.name}"</p>
+            a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='deleteDeviceTypeSubmit') <i class='fa fa-trash fa-2x'></i> <p>Delete "#{deviceTypeInfo.name}"</p>

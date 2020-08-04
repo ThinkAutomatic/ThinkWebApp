@@ -1,0 +1,99 @@
+<!-- device popup -->
+div(data-role='popup', id='devicePopupDialog', data-reload='true')
+  div(data-role='header', data-position='inline')
+    a(href='#', data-rel='back', data-ajax='false', class='ui-btn ui-btn-right')
+      i(class='fa fa-close')
+    if cookies.edit
+      a(href='#', id='deleteDevice', data-ajax='false', class='ui-btn ui-btn-left deleteObject')
+        i(class='fa fa-trash', style='padding-left:10px;', data-ajax='false')
+    h1(class='nd-title', id='devicePopupTitle') Loading...
+  div(data-role='content')
+    if cookies.edit
+      a(href='#', data-ajax='false', class='ui-btn ui-btn-icon-block renameDevice') Rename
+        i(class='fa fa-pencil-square-o', style='padding-left:10px;', data-ajax='false')
+      div(id='deviceRoomSelectDiv')
+        select(id='deviceRoomSelect')
+          option(value='0') Other
+          if home && home.rooms
+            for room in home.rooms
+              option(value=room.roomId)= room.name
+    div(id='devicePopupEmpty')
+      p Device does not process commands
+    form
+      div(id='devicePopupControls')
+      div(data-role='collapsible', id='devicePopupSettings')
+        h3 Settings
+        div(id='deviceDirectUrlDiv', style='text-align: center')
+          a(href='#', target="_blank", data-ajax='false', id='deviceDirectUrl') Direct device link
+        fieldset(data-role='controlgroup', id='devicePopupSettingControls')
+
+<!-- editObject popup -->
+div(data-role='popup', id='editObjectPopupDialog')
+  div(data-role='header', data-position='inline')
+    a(href='#', data-rel='back', data-ajax='false', class='ui-btn ui-btn-right')
+      i(class='fa fa-close')
+    a(href='#', id='deleteObject', data-ajax='false', class='ui-btn ui-btn-left deleteObject')
+      i(class='fa fa-trash')
+    h1(class='nd-title', id='editObjectPopupTitle') Loading...
+  div(data-role='content')
+    form(class='editObjectForm')
+      input(type='text', id='editObjectVal', name='editObjectVal')
+      button(class='ui-btn', id='editObjectSubmit') Submit
+
+<!-- linkDevice popup -->
+div(data-role='popup', id='linkDevicePopupDialog', data-reload='true')
+  div(data-role='header', data-position='inline')
+    a(href='#', data-rel='back', data-ajax='false', class='ui-btn ui-btn-right')
+      i(class='fa fa-close')
+    h1(class='nd-title', id='linkDevicePopupTitle') Link Device
+  div(data-role='content')
+    select(id='linkDeviceRoomSelect')
+      option(value='0') Not in a Room
+      if home && home.rooms
+        for room in home.rooms
+          option(value=room.roomId)= room.name
+    a(href='#', data-ajax='false', class='ui-btn ui-btn-icon-block', id='linkDeviceType') Device type (optional)
+      i(class='fa fa-search', style='padding-left:10px;', data-ajax='false')
+    a(href='#', data-ajax='false', class='ui-btn ui-btn-icon-block', id='linkDeviceName') Name (optional)
+      i(class='fa fa-pencil-square-o', style='padding-left:10px;', data-ajax='false')
+    button(class='ui-btn', id='linkDeviceSubmit') Submit
+
+<!-- selectDeviceType popup -->
+div(data-role='popup', id='selectDeviceTypePopupDialog')
+  div(data-role='header', data-position='inline')
+    a(href='#', data-rel='back', data-ajax='false', class='ui-btn ui-btn-right cancelSelectDeviceType')
+      i(class='fa fa-close')
+    h1(class='nd-title', id='selectDeviceTypePopupTitle') Select Device Type
+  div(data-role='content')
+    input(type='text', id='deviceTypeSearch', placeholder='Enter device type search terms here...')
+    button(class='ui-btn', id='deviceTypeSearchSubmit') Search
+    div(id='deviceTypesDiv', hidden='true')
+      select(id='selectDeviceTypeSelect')
+      button(class='ui-btn', id='deviceTypeSelectSubmit') Select
+
+<!-- editKeyPopup popup -->
+div(data-role='popup', id='editKeyPopupDialog')
+  div(data-role='header', data-position='inline')
+    a(href='#', data-rel='back', data-ajax='false', class='ui-btn ui-btn-right')
+      i(class='fa fa-close')
+    a(href='#', id='deleteKey', data-ajax='false', class='ui-btn ui-btn-left')
+      i(class='fa fa-trash')
+    h1(class='nd-title', id='keyPopupTitle') Edit Home Key
+  div(data-role='content')
+    form(class='editKeyForm')
+      input(type='text', id='editKeyName', placeholder='Optional key name', name='editKeyName')
+      label(for='dtPickerStart') Key valid start date/time:
+      input(type='text', id='dtPickerStart', name='dtPickerStart', class='dtPicker')
+      label(for='dtPickerEnd') Key expiration date/time:
+      input(type='text', id='dtPickerEnd', name='dtPickerEnd', class='dtPicker')
+      button(type='button', class='ui-btn', id='editKeyShare') Share
+      button(class='ui-btn', id='editKeySubmit') Submit
+
+<!-- shareKeyPopup popup -->
+div(data-role='popup', id='shareKeyPopupDialog')
+  div(data-role='header', data-position='inline')
+    a(href='#', data-rel='back', data-ajax='false', class='ui-btn ui-btn-right')
+      i(class='fa fa-close')
+    h1(class='nd-title', id='shareKeyPopupTitle') Share Home Key
+  div(data-role='content')
+    textarea(id='keyLink', cols='30')

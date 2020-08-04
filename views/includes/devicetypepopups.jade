@@ -1,0 +1,94 @@
+<!-- yes/no popup -->
+div(data-dismissible='false', data-role='popup', id='yesNoPopupDialog')
+  div(data-role='header', data-position='inline')
+    a(data-ajax='false', class='ui-btn ui-btn-right cancelButton')
+      i(class='fa fa-close')
+    a(data-ajax='false', class='ui-btn ui-btn-left prevButton')
+      i(class='fa fa-arrow-circle-left')
+    h1(class='nd-title', class='popupTitle') 
+  div(data-role='content')
+    p(class='prompt') Prompt
+    button(type='button', class='ui-btn', id='yesNoYes') Yes
+    button(type='button', class='ui-btn', id='yesNoNo') No
+
+<!-- getName popup -->
+div(data-dismissible='false', data-role='popup', id='getNamePopupDialog')
+  div(data-role='header', data-position='inline')
+    a(data-ajax='false', class='ui-btn ui-btn-right cancelButton')
+      i(class='fa fa-close')
+    a(data-ajax='false', class='ui-btn ui-btn-left prevButton')
+      i(class='fa fa-arrow-circle-left')
+    h1(class='nd-title', class='popupTitle') 
+  div(data-role='content')
+    p(class='prompt') Prompt
+    form(class='getNameForm')
+      input(type='text', id='getNameVal', name='getNameVal')
+      button(class='ui-btn', id='getNameSubmit') Submit
+
+<!-- getInstructions popup -->
+div(data-dismissible='false', data-role='popup', id='getInstructionsPopupDialog')
+  div(data-role='header', data-position='inline')
+    a(data-ajax='false', class='ui-btn ui-btn-right cancelButton')
+      i(class='fa fa-close')
+    a(data-ajax='false', class='ui-btn ui-btn-left prevButton')
+      i(class='fa fa-arrow-circle-left')
+    h1(class='nd-title', class='popupTitle') 
+  div(data-role='content')
+    p(class='prompt') Prompt
+    form(class='getInstructionsForm')
+      textarea(id='getInstructionsVal', name='getInstructionsVal')
+      button(class='ui-btn', id='getInstructionsSubmit') Submit
+
+<!-- selectModes popup -->
+div(data-dismissible='false', data-role='popup', id='selectModesPopupDialog')
+  div(data-role='header', data-position='inline')
+    a(data-ajax='false', class='ui-btn ui-btn-right cancelButton')
+      i(class='fa fa-close')
+    a(data-ajax='false', class='ui-btn ui-btn-left prevButton')
+      i(class='fa fa-arrow-circle-left')
+    h1(class='nd-title', class='popupTitle') 
+  div(data-role='content')
+    p(class='prompt') Prompt
+    form(class='selectModesForm')
+      div(class='selectModesContent')
+      button(class='ui-btn', id='selectModesSubmit') Submit
+
+<!-- viewActionTypePopupDialog popup -->
+div(data-dismissible='false', data-role='popup', id='viewActionTypePopupDialog')
+  div(data-role='header', data-position='inline')
+    a(data-ajax='false', class='ui-btn ui-btn-right actionTypeCancelButton')
+      i(class='fa fa-close')
+    if !disabled
+      a(href='#', id='deleteActionType', data-ajax='false', class='ui-btn ui-btn-left')
+        i(class='fa fa-trash')
+    h1(class='nd-title', class='popupTitle') Action Type
+  div(data-role='content')
+    div(id='actionTypeInfo', data-edited='false')
+    label(for='attr-name') Action Name:
+    input(data-ajax='false', class='actionTypeAttr', type='text', name='attr-name', id='attr-name', disabled=disabled)
+    label(for='attr-modes') Modes:
+    input(data-ajax='false', class='actionTypeAttr', type='text', name='attr-modes', id='attr-modes', disabled=disabled)
+    label(for='attr-activate') Activate:
+    input(data-ajax='false', class='actionTypeAttr', type='text', name='attr-activate', id='attr-activate', disabled=disabled)
+    label(for='attr-deactivate') Deactivate:
+    input(data-ajax='false', class='actionTypeAttr', type='text', name='attr-deactivate', id='attr-deactivate', disabled=disabled)
+    label(for='attr-rangeLow') Range Low:
+    input(data-ajax='false', class='actionTypeAttr', type='text', name='attr-rangeLow', id='attr-rangeLow', disabled=disabled)
+    label(for='attr-rangeHigh') Range High:
+    input(data-ajax='false', class='actionTypeAttr', type='text', name='attr-rangeHigh', id='attr-rangeHigh', disabled=disabled)
+    label(for='attr-rangePrecision') Range Precision:
+    input(data-ajax='false', class='actionTypeAttr', type='text', name='attr-rangePrecision', id='attr-rangePrecision', disabled=disabled)
+    label(for='attr-rangeStep') Range Step:
+    input(data-ajax='false', class='actionTypeAttr', type='text', name='attr-rangeStep', id='attr-rangeStep', disabled=disabled)
+    input(data-ajax='false', class='actionTypeAttr', type='checkbox', name='attr-receive', id='attr-receive', disabled=disabled)
+    label(for='attr-receive') Receive as Command
+    input(data-ajax='false', class='actionTypeAttr', type='checkbox', name='attr-learn', id='attr-learn', disabled=disabled)
+    label(for='attr-learn') Learn
+    input(data-ajax='false', class='actionTypeAttr testClass', type='checkbox', name='attr-guess', id='attr-guess', disabled=disabled)
+    label(for='attr-guess') Guess
+    input(data-ajax='false', class='actionTypeAttr', type='checkbox', name='attr-isTrigger', id='attr-isTrigger', disabled=disabled)
+    label(for='attr-isTrigger') Is Trigger
+    input(data-ajax='false', class='actionTypeAttr', type='checkbox', name='attr-isWakeUpOnly', id='attr-isWakeUpOnly', disabled=disabled)
+    label(for='attr-isWakeUpOnly') Is Wake Up Only
+    input(data-ajax='false', class='actionTypeAttr', type='checkbox', name='attr-isSetting', id='attr-isSetting', disabled=disabled)
+    label(for='attr-isSetting') Is Setting

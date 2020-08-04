@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  div(data-role='page')
+    include ./includes/devicetypepopups.jade
+
+    div(data-role='header')
+      if cookies.userId
+        a(class='signoutButton', data-ajax='false', class='ui-btn ui-btn-right')
+          i(class='fa fa-sign-out')
+      else
+        a(href='/users/signin?editDeviceTypes=true', data-ajax='false', class='ui-btn ui-btn-right')
+          i(class='fa fa-sign-in')
+      h1(style='text-align:center;')= title
+    div(data-role='content')
+      label(for='dtSearchText') Device type search terms:
+      form
+        input(type='text', name='dtSearchText', id='dtSearchText', placeholder='Enter device type search text here...', value=filter, autofocus)
+      if !cookies.userId
+        a(href='/users/signin?editDeviceTypes=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i>Sign in to edit device types
+      ul(data-role='listview', data-inset='false', data-icon='false')
+        if deviceTypesInfo
+          each dt in deviceTypesInfo
+            li
+              a(data-ajax='false', data-deviceTypeUuid='#{dt.deviceTypeUuid}', class='ui-btn ui-btn-inline dtButton') #{(dt.name ? dt.name : 'unnamed')} <span class="clr-#{theme}""> [#{dt.ownerUserName}] </span>
+        else
+          li
+            a(href='/', data-ajax='false', class='ui-btn ui-btn-inline') No registered device types match search text.
+        if draftDeviceTypesInfo
+          each dt in draftDeviceTypesInfo
+            li
+              a(data-ajax='false', data-deviceTypeDraftId='#{dt.draftId}', class='ui-btn ui-btn-inline dtButton') #{(dt.name ? dt.name : 'unnamed')} <span class="clr-#{theme}""> [Draft] </span>
+      if cookies.userId
+        a(data-ajax='false', class='ui-btn ui-btn-icon-block newDeviceType') <i class='fa fa-magic fa-2x'></i> <p>Create new Device Type</p>
+

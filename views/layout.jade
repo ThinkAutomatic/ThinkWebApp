@@ -1,0 +1,34 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    title= title
+    meta(name='description', content='')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+
+    link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
+    link(rel='stylesheet', href='/stylesheets/jquery.mobile.min.css')
+    link(rel='stylesheet', href='/vendor/waves/waves.min.css')
+    link(rel='stylesheet', href='/vendor/wow/animate.css')
+    link(rel='stylesheet', href='/stylesheets/nativedroid2.css')
+    - var theme = (cookies && cookies.theme ? cookies.theme : 'green')
+    link(rel='stylesheet', href='/stylesheets/nativedroid2.color.#{theme}.css')
+    link(rel='stylesheet', href='/stylesheets/jquery.simple-dtpicker.css')
+
+    meta(name='mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black')
+
+  body
+    script(src='/javascripts/jquery.min.js')
+    script(src='/javascripts/jquery.simple-dtpicker.js')
+    script(src='/javascripts/jquery-ui.min.js')
+    script(src='/javascripts/jquery.mobile.min.js')
+    script(src='/vendor/waves/waves.min.js')
+    script(src='/vendor/wow/wow.min.js')
+    script(src='/javascripts/nativedroid2.js')
+    script(src='/javascripts/ThinkWebApp.js')
+    script(src='/nd2settings.js')
+
+    block content

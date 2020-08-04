@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  div(data-role='page')
+    div(data-role='header')
+      a(href='/', class='ui-btn ui-btn-left')
+        i(class='fa fa-arrow-circle-left')
+      h1(style='text-align:center;') Sign in
+    div(data-role='content')
+      form(class='signinForm')
+        label(for='userName') Username or email address:
+        input(type='text', id='userName', value=(cookies.userName ? cookies.userName : undefined), required)
+        label(for='password') Password:
+        input(type='password', id='password', required)
+        input(type='submit', data-ajax='false', value='OK')
+        a(href='/', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Cancel
+        a(href='/users/signup', data-ajax='false', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Signup ?
+        a(href='/users/emailsignin', data-ajax='false', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Forgot password or signin with email ?

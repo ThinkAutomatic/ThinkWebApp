@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  div(data-role='page')
+    div(data-role='header')
+      a(href='/', class='ui-btn ui-btn-left')
+        i(class='fa fa-arrow-circle-left')
+      h1(style='text-align:center;')= title
+    div(data-role='content')
+      form(class='emailSigninForm', data-ajax='false')
+        label(for='userName') Email address or user name:
+        input(type='text', data-ajax='false', name='userName', id='userName', placeholder='Enter registered email address or user name')
+        input(type='submit', data-ajax='false', value='Request email signin/verification link')
+        a(href='/', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Cancel

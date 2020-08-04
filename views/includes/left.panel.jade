@@ -1,0 +1,42 @@
+<!-- panel left -->
+div(data-role='panel', id='leftpanel', data-display='overlay', data-position-fixed='true', style='width: 230px')
+  img(src='/images/logov1b-medium.png', alt='Think Automatic')
+  ul(data-role='listview', data-inset='false', data-icon='false')
+    li
+      if cookies.userId
+        a(class='signoutButton', data-ajax='false') <i class='fa fa-sign-out'></i> Sign out user '#{cookies.userName}' 
+      else
+        a(href='/users/signin', data-ajax='false') <i class='fa fa-sign-in'></i> Sign in 
+    if cookies.userId
+      li
+        a(href='/users/settings', data-ajax='false') <i class='fa fa-gear'></i> Settings
+      li
+        if cookies.edit
+          a(href='/?edit=false', data-ajax='false') <i class='fa fa-check'></i> Exit edit mode
+        else
+          a(href='/?edit=true', data-ajax='false') <i class='fa fa-pencil-square-o'></i> Enter edit mode
+      if home.homeId && home.name
+        li
+          a(href='/homes/keys', data-ajax='false') <i class='zmdi zmdi-home'></i> Manage keys for '#{home.name}'
+
+  div(data-role='collapsible-set', data-inset='false', data-collapsed-icon='carat-d', data-expanded-icon='carat-d', data-iconpos='right')
+    div(data-role='collapsible', id='homeList', data-collapsed='false')
+      h3 Homes
+      form
+        fieldset(data-role='controlgroup')
+          if !homes.error
+            for h in homes
+              input(type='radio', class='homeChoice', name='home-choice', id='home-#{h.homeId}', data-homeId='#{h.homeId}', value='home-#{h.homeId}', checked=(h.homeId == home.homeId ? 'checked' : undefined))
+              label(for='home-#{h.homeId}')= (h.name ? h.name : 'unnamed')
+            if cookies.edit && cookies.userName
+              a(class='ui-btn ui-btn-icon-block newHome', data-ajax='false') <i class='fa fa-plus-circle'></i> Add new home 
+            else
+              if !cookies.userName && !homes.length
+                a(href='/users/signin', class='ui-btn ui-btn-icon-block', data-ajax='false') <i class='fa fa-plus-circle'></i> Add new home
+
+    div(data-role='collapsible')
+      h3 Themes
+      ul(data-role='listview', data-inset='false', data-icon='false')
+        each themeName in ['red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue', 'cyan', 'teal', 'green', 'light-green', 'lime', 'yellow', 'amber', 'orange', 'deep-orange', 'brown', 'blue-grey']
+          li
+            a(href='/?theme=#{themeName}', data-ajax='false', class='ui-btn ui-btn-inline clr-btn-#{themeName}')= themeName

@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  div(data-role='page')
+    div(data-role='header')
+      h1(style='text-align:center;')= title
+    div(data-role='content')
+      p()= message
+      form(class='messageForm', data-ajax='false', action='#{redirect}')
+        input(type='submit', data-ajax='false', value=(buttonLabel ? buttonLabel : 'OK'))
