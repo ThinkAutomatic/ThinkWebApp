@@ -11,10 +11,10 @@ block content
           if home.devices && home.devices.length
             for device in home.devices
               div(class='col-xs-auto')
-                a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.online ? '' : ' class=\'clr-grey\''}>#{device.name ? device.name : 'Unnamed Device'}</span>
+                a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.online ? '' : ' class=\'clr-grey\''} data-span-deviceId=#{device.deviceId}>#{device.name ? device.name : 'Unnamed Device'}</span>
           else
             div(class='col-xs-auto')
-              a(class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button')<span class=\'clr-grey\'>No devices unplaced in a room</span>
+              a(class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button')<span class=\'clr-grey\'>No devices with an unspecified location</span>
 
       if home.rooms
         for room in home.rooms
@@ -23,7 +23,7 @@ block content
               if room.devices && room.devices.length
                 for device in room.devices
                   div(class='col-xs-auto')
-                    a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.online ? '' : ' class=\'clr-grey\''}>#{device.name ? device.name : 'Unnamed Device'}</span>
+                    a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.online ? '' : ' class=\'clr-grey\''} data-span-deviceId=#{device.deviceId}>#{device.name ? device.name : 'Unnamed Device'}</span>
               else
                 div(class='col-xs-auto')
                   a(class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button')<span class=\'clr-grey\'>No devices in #{room.name}</span>
@@ -91,15 +91,14 @@ block content
                     fieldset(data-role='controlgroup', data-type="vertical", data-mini="true")
                       if room.scenes
                         for scene in room.scenes
-                          if scene.name || (scene.sceneId == room.preferredSceneId) || (scene.sceneId == room.previousSceneId) || (scene.sceneId == room.currentSceneId) || (scene.level == 0) || (scene.level == 100)
-                            - var sceneName = (scene.name ? scene.name : (scene.autoName ? scene.autoName : '') + (cookies.edit ? ' (learned)' : ''))
-                            input(type='radio', class=(cookies.edit ? 'editScene sceneChoice' : 'sceneChoice'), name='scene-choice-room-#{room.roomId}', id='radio-scene-#{scene.sceneId}', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName, value='scene-#{scene.sceneId}', checked=(scene.sceneId == room.currentSceneId ? 'checked' : undefined))
-                            label(for='radio-scene-#{scene.sceneId}') <span style="font-size:3">#{sceneName} </span>
-                              span(class='clr-#{theme}', style='font-size:3')   (#{scene.level}%)
-                              if cookies.edit
-                                i(class='fa fa-pencil-square-o fa-2x editScene sceneChoice', style='padding-left:10px;', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName)
-                              else if room.preferredSceneId == scene.sceneId
-                                span(class='clr-#{theme}', style='font-size:3')   &lt;- [preferred]
+                          - var sceneName = (scene.name ? scene.name : (scene.autoName ? scene.autoName : '') + (cookies.edit ? ' (learned)' : ''))
+                          input(type='radio', class=(cookies.edit ? 'editScene sceneChoice' : 'sceneChoice'), name='scene-choice-room-#{room.roomId}', id='radio-scene-#{scene.sceneId}', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName, value='scene-#{scene.sceneId}', checked=(scene.sceneId == room.currentSceneId ? 'checked' : undefined))
+                          label(for='radio-scene-#{scene.sceneId}') <span style="font-size:3">#{sceneName} </span>
+                            span(class='clr-#{theme}', style='font-size:3')   (#{scene.level}%)
+                            if cookies.edit
+                              i(class='fa fa-pencil-square-o fa-2x editScene sceneChoice', style='padding-left:10px;', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName)
+                            else if room.preferredSceneId == scene.sceneId
+                              span(class='clr-#{theme}', style='font-size:3')   &lt;- [preferred]
             div(data-role='nd2tab', data-tab='room-0')
               if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
                 a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>

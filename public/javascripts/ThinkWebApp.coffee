@@ -1,6 +1,28 @@
 $(document).on 'pagecreate', ->
   urlToThinkAutomatic = '/api/'
 
+  socket = null
+  setTimeout (->
+    socket = io.connect("https://socket.thinkautomatic.io", { query: { token: getCookie('accessToken') }})
+    socket.on 'message', (data) ->
+      parsedData = JSON.parse(data)
+      if parsedData
+        if parsedData['sceneChange']
+          $("div[data-tab='room-" + (parsedData['sceneChange']['roomId']).toString() + "'] input[type='radio']").prop('checked',false)
+          $('#radio-scene-' + (parsedData['sceneChange']['sceneId']).toString()).prop('checked', true)
+          $('.sceneChoice').checkboxradio('refresh')
+        else if parsedData['deviceStatusChange']
+          if parsedData['deviceStatusChange']['isOnline']
+            $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').removeClass('clr-grey')
+          else
+            $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').addClass('clr-grey')
+  ), 100
+
+#  socket = io.connect()
+#  socket.on("news", (data)-> 
+#    console.log(data)
+#    socket.emit("my other event",{my:"data"}))
+
   jQuery["taPost"] = (path, data, callback) ->
     if $.isFunction(data)
       callback = data
@@ -79,14 +101,13 @@ $(document).on 'pagecreate', ->
     else if noCallback
       noCallback()
 
-  timeZone = (reverse) ->
+  timeZone = () ->
     zoneVal = -(new Date().getTimezoneOffset() / 60)
-    if reverse
-      zoneVal = -1 * zoneVal
     if zoneVal < 0
-      return zoneVal.toString() + '00'
+      zoneVal = -1 * zoneVal
+      return '-' + zoneVal.toString().padStart(2, '0')
     else
-      return '+' + zoneVal.toString() + '00'
+      return '+' + zoneVal.toString().padStart(2, '0')
 
   padNum = (n) ->
     if (n < 10)
@@ -94,12 +115,20 @@ $(document).on 'pagecreate', ->
     else
       return n.toString()
 
-  convertToLocalTime = (datetimeStr) ->
-    dt = new Date(datetimeStr)
-    dt.setHours(dt.getHours() - (new Date().getTimezoneOffset() / 60));
-    return dt.getFullYear().toString() + '-' + padNum(dt.getMonth() + 1) + '-' + padNum(dt.getDate()) + ' ' + padNum(dt.getHours()) + ':' + padNum(dt.getMinutes())
+  dateTimeFromStr = (datetimeStr) ->
+    arr = (datetimeStr + '+00').split(/[- :\+]/)
+    return new Date(parseInt(arr[0]), parseInt(arr[1])-1, parseInt(arr[2]), parseInt(arr[3]), parseInt(arr[4]), parseInt(arr[5]))
 
-  $('.dtPicker').appendDtpicker({'closeOnSelected': true, 'futureOnly': true, 'autodateOnStart': false})
+  convertToLocalTime = (datetimeStr) ->
+    dt = dateTimeFromStr(datetimeStr)
+    dt.setHours(dt.getHours() - (new Date().getTimezoneOffset() / 60));
+    return dt.getFullYear().toString() + '-' + padNum(dt.getMonth() + 1) + '-' + padNum(dt.getDate()) + ' ' + padNum(dt.getHours()) + ':' + padNum(dt.getMinutes()) + timeZone()
+
+  convertToISOTimeFormat = (datetimeStr) ->
+    dt = dateTimeFromStr(datetimeStr)
+    return dt.toISOString()
+
+  $('.dtPicker').appendDtpicker({'closeOnSelected': true, 'futureOnly': true, 'autodateOnStart': true})
 
   $('.shareKey').click ->
 #    alert((new Date()).toString())
@@ -152,11 +181,11 @@ $(document).on 'pagecreate', ->
   submitKey = (cb) ->
     postData = {}
     postData['name'] = $('#editKeyName').val()
-    postData['homeId'] = getCookie('homeId')
+    postData['homeId'] = parseInt(getCookie('homeId'))
     if $('#dtPickerStart').val()
-      postData['validStart'] = $('#dtPickerStart').val().toString() + timeZone()
+      postData['validStart'] = convertToISOTimeFormat($('#dtPickerStart').val().toString())
     if $('#dtPickerEnd').val()
-      postData['expiration'] = $('#dtPickerEnd').val().toString() + timeZone()
+      postData['expiration'] = convertToISOTimeFormat($('#dtPickerEnd').val().toString())
     if $('#editKeyPopupDialog').attr('data-homeKeyId')
       path = 'homeKeys/' + $('#editKeyPopupDialog').attr('data-homeKeyId')
     else
@@ -187,12 +216,22 @@ $(document).on 'pagecreate', ->
         $('#editKeyPopupDialog').popup('close')
         setTimeout (->
           $('#shareKeyPopupTitle').text('Share ' + response['homeName'] + ' Key')
-          $('#keyLink').text('https://app.thinkautomatic.io/homes?homeId=' + response['homeId'].toString() + '&homeKey=' + response['token'])
+          $('#keyLink').text('https://app.thinkautomatic.io/homes?homeId=' + response['homeId'].toString() + '&homeKey=' + response['keyToken'])
           $('#shareKeyPopupDialog').popup('open')
-          $('#keyLink').focus()
-          $('#keyLink').select()
         ), 100
     ) 
+
+  $('#copyLinkToClipboard').click ->
+    $('#keyLink').focus()
+    $('#keyLink').select()
+    try
+      $('#keyLink').setSelectionRange(0, $('#keyLink').value.length)
+
+    result = document.execCommand('copy')
+    if result
+      $('#copyLinkToClipboard').text('Link copied')
+    else
+      $('#copyLinkToClipboard').text('Unable to copy link')
 
   $('#shareKeyPopupDialog').on 'popupafterclose', () -> 
     $.mobile.loading('show')

@@ -83,9 +83,9 @@ div(data-role='popup', id='editKeyPopupDialog')
     form(class='editKeyForm')
       input(type='text', id='editKeyName', placeholder='Optional key name', name='editKeyName')
       label(for='dtPickerStart') Key valid start date/time:
-      input(type='text', id='dtPickerStart', name='dtPickerStart', class='dtPicker')
+      input(type='text', autocomplete='off', readonly='readonly', id='dtPickerStart', name='dtPickerStart', class='dtPicker')
       label(for='dtPickerEnd') Key expiration date/time:
-      input(type='text', id='dtPickerEnd', name='dtPickerEnd', class='dtPicker')
+      input(type='text', autocomplete='off', readonly='readonly', id='dtPickerEnd', name='dtPickerEnd', class='dtPicker')
       button(type='button', class='ui-btn', id='editKeyShare') Share
       button(class='ui-btn', id='editKeySubmit') Submit
 
@@ -96,4 +96,5 @@ div(data-role='popup', id='shareKeyPopupDialog')
       i(class='fa fa-close')
     h1(class='nd-title', id='shareKeyPopupTitle') Share Home Key
   div(data-role='content')
-    textarea(id='keyLink', cols='30')
+    textarea(id='keyLink', readonly='true', contenteditable='true', cols='30')
+    button(class='ui-btn', id='copyLinkToClipboard') Copy link to clipboard

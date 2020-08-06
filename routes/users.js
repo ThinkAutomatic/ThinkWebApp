@@ -34,6 +34,7 @@ router.get("/signin", function (req, res, next) {
 });
 
 router.post("/signin", function (req, res, next) {
+  console.log("post /signin");
   thinkApi.signin(req, req.body, function (err, accessToken) {
     console.log(accessToken);
     if (accessToken.accessToken) {

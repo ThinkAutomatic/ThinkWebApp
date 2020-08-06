@@ -5,6 +5,7 @@ var thinkApi = require("./think-api");
 /* GET home page. */
 router.get("/", function (req, res) {
   if (!req.cookies.acceptCookies) {
+    console.log("cookies not accepted");
     res.cookie("acceptCookies", "true", thinkApi.cookieParams);
     res.render("message", {
       cookies: req.cookies,
@@ -18,6 +19,7 @@ router.get("/", function (req, res) {
     res.cookie("theme", req.query.theme, thinkApi.cookieParams);
     res.redirect("/");
   } else if (req.query && req.query.homeId) {
+    console.log("test: homeId");
     res.cookie("homeId", req.query.homeId, thinkApi.cookieParams);
     if (req.query.roomId)
       res.cookie("roomId", req.query.roomId, thinkApi.cookieParams);
@@ -43,7 +45,8 @@ router.get("/", function (req, res) {
               termsTokenInfo.verificationToken
           );
         });
-      } else if (req.cookies.homeId && req.cookies.userId) {
+        //      } else if (req.cookies.homeId && req.cookies.userId) {
+      } else if (req.cookies.homeId) {
         thinkApi.getByIdVerbose(req, "homes", req.cookies.homeId, function (
           err,
           homeInfo
@@ -62,7 +65,12 @@ router.get("/", function (req, res) {
             home: homeInfo,
           });
         });
-      } else if (homesInfo.length > 0 && homesInfo[0].homeId) {
+      } else if (
+        homesInfo.length > 0 &&
+        homesInfo[0].homeId &&
+        (!req.cookies.homeId || req.cookies.homeId != homesInfo[0].homeId)
+      ) {
+        console.log("test: homesInfo.length");
         res.cookie("homeId", homesInfo[0].homeId, thinkApi.cookieParams);
         res.redirect("/");
       } else {

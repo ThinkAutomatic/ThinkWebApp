@@ -7,7 +7,7 @@ block content
         i(class='fa fa-arrow-circle-left')
       h1(style='text-align:center;') Sign in
     div(data-role='content')
-      form(class='signinForm')
+      form(class='signinForm', data-ajax='false')
         label(for='userName') Username or email address:
         input(type='text', id='userName', value=(cookies.userName ? cookies.userName : undefined), required)
         label(for='password') Password:

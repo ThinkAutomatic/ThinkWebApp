@@ -4,7 +4,7 @@ var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
-var http = require("http");
+//var http = require("http");
 
 var api = require("./routes/think-api");
 
@@ -99,4 +99,4 @@ module.exports = app;
 
 // Configure our HTTP server
 //var http_server = http.createServer(app_http).listen(9080);
-var http_server = http.createServer(app).listen(9080);
+//var http_server = http.createServer(app).listen(9080);
