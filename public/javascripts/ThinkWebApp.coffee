@@ -16,6 +16,8 @@ $(document).on 'pagecreate', ->
             $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').removeClass('clr-grey')
           else
             $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').addClass('clr-grey')
+        else if parsedData['newDevices']
+          new $.nd2Toast({ ttl: 8000, message : "New device(s) discovered", action : { title : "show", link : "/devices/discover", color: "lime" } });
   ), 100
 
 #  socket = io.connect()

@@ -71,8 +71,6 @@ block content
 
           if home.newDevices
             a(href='/devices/discover', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Show discovered device(s)            
-            script.
-              new $.nd2Toast({ ttl: 8000, message : "New device(s) discovered", action : { title : "show", link : "/devices/discover", color: "lime" } });
 
           if home.rooms
             for room in home.rooms

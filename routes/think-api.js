@@ -2,7 +2,6 @@ var request = require("request");
 var express = require("express");
 var router = express.Router();
 
-//var urlToThinkAutomatic = 'https://api.thinkautomatic.io/v1/';
 var urlToThinkAutomatic = "https://api.thinkautomatic.io/";
 
 const COOKIE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
@@ -42,7 +41,9 @@ var apiGet = function (req, path, filter, cb) {
       qs: params,
     },
     function (err, httpResponse, body) {
-      if (typeof body === "string") body = JSON.parse(body);
+      try {
+        if (typeof body === "string") body = JSON.parse(body);
+      } catch (e) {}
       cb(err, body);
     }
   );
@@ -149,62 +150,6 @@ router.delete("/*", function (req, res, next) {
   });
 });
 
-/*
-thinkApi.delete(req, req.body.path, function(err)
-{
-  res.setHeader('Content-Type', 'text/plain');
-  if (req.body.path.substring(0, 5) == "homes") {
-    res.clearCookie('homeId');
-    res.clearCookie('roomId');
-  }
-  else if (req.body.path.substring(0, 5) == "rooms") {
-    res.clearCookie('roomId');
-  }
-  res.send('success');
-});
-}
-else {
-res.send('error');
-}
-*/
-
-/*
-router.post("/api/:path/:id", function (req, res, next) {
-  console.log('router.post("/api/:path/:id"');
-  console.log(req.body);
-  thinkApi.post(req, req.params.path + "/" + req.params.id, req.body, function (
-    err,
-    data
-  ) {
-    res.send(data);
-  });
-});
-
-
-router.post("/api/:path1/:id/:path2", function (req, res, next) {
-  console.log('router.post("/api/:path1/:id/:path2"');
-  console.log(req.body);
-  thinkApi.post(req, req.params.path + "/" + req.params.id, req.body, function (
-    err,
-    data
-  ) {
-    res.send(data);
-  });
-});
-*/
-
-router.delete("/api/:path/:id", function (req, res, next) {
-  console.log('router.delete("/api/:path/:id"');
-  /*
-  thinkApi.post(req, req.params.path + "/" + req.params.id, req.body, function (
-    err,
-    data
-  ) {
-    res.send(data);
-  });
-  */
-});
-
 module.exports = {
   cookieParams: { path: "/", maxAge: COOKIE_MAX_AGE },
   router: router,
@@ -235,6 +180,8 @@ module.exports = {
     apiGet(req, path + "/" + objectId.toString() + "/verbose", null, cb);
   },
   getHomeKeys: function (req, homeId, cb) {
+    console.log("homeId:");
+    console.log(homeId.toString());
     apiGet(req, "homes/" + homeId.toString() + "/homeKeys", null, cb);
   },
 

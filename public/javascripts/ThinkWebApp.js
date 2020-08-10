@@ -24,6 +24,16 @@
             } else {
               return $('[data-span-deviceId=' + parsedData['deviceStatusChange']['deviceId'].toString() + ']').addClass('clr-grey');
             }
+          } else if (parsedData['newDevices']) {
+            return new $.nd2Toast({
+              ttl: 8000,
+              message: "New device(s) discovered",
+              action: {
+                title: "show",
+                link: "/devices/discover",
+                color: "lime"
+              }
+            });
           }
         }
       });
