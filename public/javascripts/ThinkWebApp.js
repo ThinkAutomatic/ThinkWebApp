@@ -5,43 +5,37 @@
     urlToThinkAutomatic = '/api/';
     socket = null;
     setTimeout((function() {
-      socket = io.connect("https://socket.thinkautomatic.io", {
-        query: {
-          token: getCookie('accessToken')
-        }
-      });
-      return socket.on('message', function(data) {
-        var parsedData;
-        parsedData = JSON.parse(data);
-        if (parsedData) {
-          if (parsedData['sceneChange']) {
-            $("div[data-tab='room-" + parsedData['sceneChange']['roomId'].toString() + "'] input[type='radio']").prop('checked', false);
-            $('#radio-scene-' + parsedData['sceneChange']['sceneId'].toString()).prop('checked', true);
-            return $('.sceneChoice').checkboxradio('refresh');
-          } else if (parsedData['deviceStatusChange']) {
-            if (parsedData['deviceStatusChange']['isOnline']) {
-              return $('[data-span-deviceId=' + parsedData['deviceStatusChange']['deviceId'].toString() + ']').removeClass('clr-grey');
-            } else {
-              return $('[data-span-deviceId=' + parsedData['deviceStatusChange']['deviceId'].toString() + ']').addClass('clr-grey');
-            }
-          } else if (parsedData['newDevices']) {
-            return new $.nd2Toast({
-              ttl: 8000,
-              message: "New device(s) discovered",
-              action: {
-                title: "show",
-                link: "/devices/discover",
-                color: "lime"
+      if (getCookie('accessToken')) {
+        socket = new WebSocket("wss://socket.thinkautomatic.io?token=" + getCookie('accessToken'));
+        return socket.onmessage = function(evt) {
+          var parsedData;
+          parsedData = JSON.parse(evt.data);
+          if (parsedData) {
+            if (parsedData['sceneChange']) {
+              $("div[data-tab='room-" + parsedData['sceneChange']['roomId'].toString() + "'] input[type='radio']").prop('checked', false);
+              $('#radio-scene-' + parsedData['sceneChange']['sceneId'].toString()).prop('checked', true);
+              return $('.sceneChoice').checkboxradio('refresh');
+            } else if (parsedData['deviceStatusChange']) {
+              if (parsedData['deviceStatusChange']['isOnline']) {
+                return $('[data-span-deviceId=' + parsedData['deviceStatusChange']['deviceId'].toString() + ']').removeClass('clr-grey');
+              } else {
+                return $('[data-span-deviceId=' + parsedData['deviceStatusChange']['deviceId'].toString() + ']').addClass('clr-grey');
               }
-            });
+            } else if (parsedData['newDevices']) {
+              return new $.nd2Toast({
+                ttl: 8000,
+                message: "New device(s) discovered",
+                action: {
+                  title: "show",
+                  link: "/devices/discover",
+                  color: "lime"
+                }
+              });
+            }
           }
-        }
-      });
+        };
+      }
     }), 100);
-    //  socket = io.connect()
-    //  socket.on("news", (data)-> 
-    //    console.log(data)
-    //    socket.emit("my other event",{my:"data"}))
     jQuery["taPost"] = function(path, data, callback) {
       if ($.isFunction(data)) {
         callback = data;
@@ -547,11 +541,11 @@
         return false;
       } else {
         optionSelected = $(this).find('option:selected');
-        deviceId = $(this).attr('data-DeviceId');
+        deviceId = $(this).attr('data-DeviceId').toString();
         return confirmDialog('Confirm', 'Move ' + $(this).attr('data-DeviceName') + ' to ' + optionSelected.text() + '?', function() {
           var postData;
           postData = {};
-          postData['roomId'] = optionSelected.val();
+          postData['roomId'] = parseInt(optionSelected.val());
           $.mobile.loading('show');
           return $.taPost('devices/' + deviceId, postData, function(response) {
             if (errorCheck(response)) {

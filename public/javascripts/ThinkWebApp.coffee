@@ -3,27 +3,23 @@ $(document).on 'pagecreate', ->
 
   socket = null
   setTimeout (->
-    socket = io.connect("https://socket.thinkautomatic.io", { query: { token: getCookie('accessToken') }})
-    socket.on 'message', (data) ->
-      parsedData = JSON.parse(data)
-      if parsedData
-        if parsedData['sceneChange']
-          $("div[data-tab='room-" + (parsedData['sceneChange']['roomId']).toString() + "'] input[type='radio']").prop('checked',false)
-          $('#radio-scene-' + (parsedData['sceneChange']['sceneId']).toString()).prop('checked', true)
-          $('.sceneChoice').checkboxradio('refresh')
-        else if parsedData['deviceStatusChange']
-          if parsedData['deviceStatusChange']['isOnline']
-            $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').removeClass('clr-grey')
-          else
-            $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').addClass('clr-grey')
-        else if parsedData['newDevices']
-          new $.nd2Toast({ ttl: 8000, message : "New device(s) discovered", action : { title : "show", link : "/devices/discover", color: "lime" } });
+    if (getCookie('accessToken'))
+      socket = new WebSocket("wss://socket.thinkautomatic.io?token=" + getCookie('accessToken'));
+      socket.onmessage = (evt) ->
+        parsedData = JSON.parse(evt.data)
+        if parsedData
+          if parsedData['sceneChange']
+            $("div[data-tab='room-" + (parsedData['sceneChange']['roomId']).toString() + "'] input[type='radio']").prop('checked',false)
+            $('#radio-scene-' + (parsedData['sceneChange']['sceneId']).toString()).prop('checked', true)
+            $('.sceneChoice').checkboxradio('refresh')
+          else if parsedData['deviceStatusChange']
+            if parsedData['deviceStatusChange']['isOnline']
+              $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').removeClass('clr-grey')
+            else
+              $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').addClass('clr-grey')
+          else if parsedData['newDevices']
+            new $.nd2Toast({ ttl: 8000, message : "New device(s) discovered", action : { title : "show", link : "/devices/discover", color: "lime" } });
   ), 100
-
-#  socket = io.connect()
-#  socket.on("news", (data)-> 
-#    console.log(data)
-#    socket.emit("my other event",{my:"data"}))
 
   jQuery["taPost"] = (path, data, callback) ->
     if $.isFunction(data)
@@ -445,11 +441,11 @@ $(document).on 'pagecreate', ->
       return false
     else
       optionSelected = $(this).find('option:selected')
-      deviceId = $(this).attr('data-DeviceId')
+      deviceId = $(this).attr('data-DeviceId').toString()
       confirmDialog('Confirm', 'Move ' + $(this).attr('data-DeviceName') + ' to ' + optionSelected.text() + '?'
         ->
           postData = {}
-          postData['roomId'] = optionSelected.val()
+          postData['roomId'] = parseInt(optionSelected.val())
           $.mobile.loading('show')
           $.taPost 'devices/' + deviceId, postData, (response) ->
             if errorCheck(response)
