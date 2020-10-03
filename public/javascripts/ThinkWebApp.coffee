@@ -712,13 +712,16 @@ $(document).on 'pagecreate', ->
       if $('#password').val() != ''
         postData['password'] = $('#password').val()
       $.mobile.loading('show')
-      $.taPost 'users/settings', postData, (response) ->
+      $.post 'settings', postData, (response) ->
         $.mobile.loading('hide')
         if errorCheck(response)
           if response.emailVerified
             alertDialog('Success', 'Settings saved')
           else
             alertDialog('Success', 'New email verification sent')
+          setTimeout (->
+            window.location.href = '/'
+          ), 4000
         return false
 
   $('.emailSigninForm').submit ->

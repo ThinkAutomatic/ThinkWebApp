@@ -855,7 +855,7 @@
           postData['password'] = $('#password').val();
         }
         $.mobile.loading('show');
-        return $.taPost('users/settings', postData, function(response) {
+        return $.post('settings', postData, function(response) {
           $.mobile.loading('hide');
           if (errorCheck(response)) {
             if (response.emailVerified) {
@@ -863,6 +863,9 @@
             } else {
               alertDialog('Success', 'New email verification sent');
             }
+            setTimeout((function() {
+              return window.location.href = '/';
+            }), 4000);
           }
           return false;
         });

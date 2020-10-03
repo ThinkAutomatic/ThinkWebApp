@@ -34,11 +34,8 @@ router.get("/signin", function (req, res, next) {
 });
 
 router.post("/signin", function (req, res, next) {
-  console.log("post /signin");
   thinkApi.signin(req, req.body, function (err, accessToken) {
-    console.log(accessToken);
     if (accessToken.accessToken) {
-      console.log("made it here");
       res.cookie("accessToken", accessToken.accessToken, thinkApi.cookieParams);
       res.cookie("userId", accessToken.userId, thinkApi.cookieParams);
       res.cookie("userName", accessToken.userName, thinkApi.cookieParams);
@@ -97,19 +94,23 @@ router.post("/settings", function (req, res, next) {
       err,
       response
     ) {
-      thinkApi.get(req, "users/whoAmI", function (err, userInfo) {
-        if (userInfo.userId)
-          res.cookie("userId", userInfo.userId, thinkApi.cookieParams);
-        if (userInfo.userName)
-          res.cookie("userName", userInfo.userName, thinkApi.cookieParams);
-        if (userInfo.emailAddress)
-          res.cookie(
-            "emailAddress",
-            userInfo.emailAddress,
-            thinkApi.cookieParams
-          );
-        res.send(userInfo);
-      });
+      if (response && response.error) {
+        res.send(response);
+      } else {
+        thinkApi.get(req, "users/whoAmI", function (err, userInfo) {
+          if (userInfo.userId)
+            res.cookie("userId", userInfo.userId, thinkApi.cookieParams);
+          if (userInfo.userName)
+            res.cookie("userName", userInfo.userName, thinkApi.cookieParams);
+          if (userInfo.emailAddress)
+            res.cookie(
+              "emailAddress",
+              userInfo.emailAddress,
+              thinkApi.cookieParams
+            );
+          res.send(userInfo);
+        });
+      }
     });
   }
 });
@@ -122,7 +123,6 @@ router.get("/settings", function (req, res, next) {
     res.redirect("/users/settings");
   } else {
     thinkApi.get(req, "users/whoAmI", function (err, userInfo) {
-      console.log(userInfo);
       if (userInfo && userInfo.error) err = userInfo;
 
       if (err) {
