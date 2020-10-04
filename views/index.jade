@@ -66,6 +66,7 @@ block content
         if cookies.homeId
           if cookies.edit
             a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room
+            a(href='/?edit=false', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-check fa-2x'></i> <p>Exit edit mode</p>
           else
             input(type='text', data-roomName='', class='phraseVal', placeholder='Enter text command here...')
 
@@ -83,7 +84,6 @@ block content
                   a(href='#room-#{room.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit #{room.name} devices
                   a(data-ajax='false', class='ui-btn ui-btn-icon-block editRoom', data-roomId=room.roomId, data-roomName=room.name) <i class='fa fa-pencil-square-o fa-2x'></i> <p>Rename #{room.name}</p>
                   a(data-ajax='false', class='ui-btn ui-btn-icon-block deleteObject', data-path='rooms/#{room.roomId}', data-objectName=room.name) <i class='fa fa-trash fa-2x'></i> <p>Delete #{room.name}</p>
-                  a(href='/?edit=false', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-check fa-2x'></i> <p>Exit edit mode</p>
                 if cookies.edit || (room.devices && room.devices.length)
                   form
                     fieldset(data-role='controlgroup', data-type="vertical", data-mini="true")
@@ -91,12 +91,12 @@ block content
                         for scene in room.scenes
                           - var sceneName = (scene.name ? scene.name : (scene.autoName ? scene.autoName : '') + (cookies.edit ? ' (learned)' : ''))
                           input(type='radio', class=(cookies.edit ? 'editScene sceneChoice' : 'sceneChoice'), name='scene-choice-room-#{room.roomId}', id='radio-scene-#{scene.sceneId}', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName, value='scene-#{scene.sceneId}', checked=(scene.sceneId == room.currentSceneId ? 'checked' : undefined))
-                          label(for='radio-scene-#{scene.sceneId}') <span style="font-size:3">#{sceneName} </span>
-                            span(class='clr-#{theme}', style='font-size:3')   (#{scene.level}%)
+                          label(for='radio-scene-#{scene.sceneId}') <span>#{sceneName} </span>
+                            span(class='clr-#{theme}')   (#{scene.level}%)
                             if cookies.edit
                               i(class='fa fa-pencil-square-o fa-2x editScene sceneChoice', style='padding-left:10px;', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName)
                             else if room.preferredSceneId == scene.sceneId
-                              span(class='clr-#{theme}', style='font-size:3')   &lt;- [preferred]
+                              span(class='clr-#{theme}')   &lt;- [preferred]
             div(data-role='nd2tab', data-tab='room-0')
               if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
                 a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>
@@ -104,7 +104,6 @@ block content
                 a(data-roomId='0', data-roomName='Other', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices not placed in a room
                 if home.devices && home.devices.length
                   a(href='#room-0-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit devices not placed in a room
-                a(href='/?edit=false', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-check fa-2x'></i> <p>Exit edit mode</p>
         else
           a(href='#leftpanel', class='ui-btn ui-btn-icon-block selectHome') <i class='zmdi zmdi-home zmd-2x'></i>Select home
       else
