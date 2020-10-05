@@ -6,8 +6,9 @@ router.get("/", function (req, res, next) {
   var filter = "";
   var draftDeviceType = {};
 
-  if (req.query && req.query.filter) filter = req.query.filter;
-  else if (!(req.query && req.query.showAll)) {
+  if (req.query && req.query.filter) {
+    filter = req.query.filter;
+  } else if (!(req.query && req.query.showAll)) {
     if (req.cookies && req.cookies.dtFilter) filter = req.cookies.dtFilter;
     //    else if (req.cookies && req.cookies.userName && !(req.query && req.query.showAll))
     //      filter = req.cookies.userName;
@@ -15,35 +16,37 @@ router.get("/", function (req, res, next) {
 
   res.cookie("dtFilter", filter, thinkApi.cookieParams);
 
-  thinkApi.getWithFilter(req, "deviceTypes/search", filter, function (
-    err,
-    deviceTypesInfo
-  ) {
-    thinkApi.get(req, "deviceTypes/drafts", function (
-      err,
-      draftDeviceTypesInfo
-    ) {
-      if (
-        draftDeviceTypesInfo.error &&
-        draftDeviceTypesInfo.error.code == 1600
+  thinkApi.getWithFilter(
+    req,
+    "deviceTypes/search",
+    { filter: filter },
+    function (err, deviceTypesInfo) {
+      thinkApi.get(req, "deviceTypes/drafts", function (
+        err,
+        draftDeviceTypesInfo
       ) {
-        res.redirect(
-          "https://api.thinkautomatic.io/terms?access_token=" +
-            req.cookies.accessToken +
-            "&userId=" +
-            req.cookies.userId.toString()
-        );
-      } else {
-        res.render("devicetypes", {
-          cookies: req.cookies,
-          title: "Device Type Builder",
-          deviceTypesInfo: deviceTypesInfo,
-          draftDeviceTypesInfo: draftDeviceTypesInfo,
-          filter: filter,
-        });
-      }
-    });
-  });
+        if (
+          draftDeviceTypesInfo.error &&
+          draftDeviceTypesInfo.error.code == 1600
+        ) {
+          res.redirect(
+            "https://api.thinkautomatic.io/terms?access_token=" +
+              req.cookies.accessToken +
+              "&userId=" +
+              req.cookies.userId.toString()
+          );
+        } else {
+          res.render("devicetypes", {
+            cookies: req.cookies,
+            title: "Device Type Builder",
+            deviceTypesInfo: deviceTypesInfo,
+            draftDeviceTypesInfo: draftDeviceTypesInfo,
+            filter: filter,
+          });
+        }
+      });
+    }
+  );
 });
 
 /*

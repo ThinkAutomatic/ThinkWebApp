@@ -25,9 +25,6 @@ var getIpAddress = function (req) {
 };
 
 var apiGet = function (req, path, filter, cb) {
-  console.log("apiGet");
-  console.log(path);
-  console.log(filter);
   if (!filter) {
     filter = {};
   }

@@ -1275,9 +1275,9 @@ $(document).on 'pagecreate', ->
 
   updateDtSearch = () ->
     if $('#dtSearchText').val() == ''
-      window.location.href = '/devicetypes?showAll=true'
+      window.location.href = '/deviceTypes?showAll=true'
     else
-      window.location.href = '/devicetypes?filter=' + fixedEncodeURI($('#dtSearchText').val())
+      window.location.href = '/deviceTypes?filter=' + fixedEncodeURI($('#dtSearchText').val())
     return true
 
   dtSearchTextBlur = false
