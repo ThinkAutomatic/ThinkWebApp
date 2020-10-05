@@ -62,13 +62,22 @@
         callback = data;
         data = void 0;
       }
-      return $.ajax({
-        url: urlToThinkAutomatic + path,
-        type: "GET",
-        contentType: "application/json",
-        data: $.param(data),
-        success: callback
-      });
+      if (data) {
+        return $.ajax({
+          url: urlToThinkAutomatic + path,
+          type: "GET",
+          contentType: "application/json",
+          data: $.param(data),
+          success: callback
+        });
+      } else {
+        return $.ajax({
+          url: urlToThinkAutomatic + path,
+          type: "GET",
+          contentType: "application/json",
+          success: callback
+        });
+      }
     };
     isValid = function(attrib) {
       return typeof attrib !== 'undefined' && attrib !== false && attrib !== null;
