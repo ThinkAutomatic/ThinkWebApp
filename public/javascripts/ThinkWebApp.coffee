@@ -36,7 +36,7 @@ $(document).on 'pagecreate', ->
       callback = data
       data = undefined
 
-    return $.ajax({url: urlToThinkAutomatic + path, type: "GET", contentType:"application/json", data: JSON.stringify(data), success: callback})
+    return $.ajax({url: urlToThinkAutomatic + path, type: "GET", contentType:"application/json", data: $.param(data), success: callback})
 
   isValid = (attrib) ->
     typeof attrib isnt 'undefined' and attrib isnt false and attrib != null
@@ -517,7 +517,7 @@ $(document).on 'pagecreate', ->
     $('#devicePopupDialog').popup('open')
 
     deviceId = $(this).attr('data-deviceId')
-    $.taGet 'devices/' + deviceId.toString(), {}, (deviceInfo) ->
+    $.taGet 'devices/' + deviceId.toString(), (deviceInfo) ->
       if deviceInfo['deviceId']
         $.taGet 'devices/' + deviceId.toString() + '/deviceType', (deviceTypeInfo) ->
           if deviceInfo['name']

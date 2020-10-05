@@ -66,7 +66,7 @@
         url: urlToThinkAutomatic + path,
         type: "GET",
         contentType: "application/json",
-        data: JSON.stringify(data),
+        data: $.param(data),
         success: callback
       });
     };
@@ -628,7 +628,7 @@
       $('#devicePopupSettings').hide();
       $('#devicePopupDialog').popup('open');
       deviceId = $(this).attr('data-deviceId');
-      return $.taGet('devices/' + deviceId.toString(), {}, function(deviceInfo) {
+      return $.taGet('devices/' + deviceId.toString(), function(deviceInfo) {
         if (deviceInfo['deviceId']) {
           return $.taGet('devices/' + deviceId.toString() + '/deviceType', function(deviceTypeInfo) {
             var modeHTML;

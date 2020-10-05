@@ -3,6 +3,7 @@ var express = require("express");
 var router = express.Router();
 
 var urlToThinkAutomatic = "https://api.thinkautomatic.io/";
+//var urlToThinkAutomatic = "http://localhost:8443/";
 
 const COOKIE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
 
@@ -26,9 +27,11 @@ var getIpAddress = function (req) {
 var apiGet = function (req, path, filter, cb) {
   console.log("apiGet");
   console.log(path);
-  var params = {};
-
-  if (filter != null) params["filter"] = filter;
+  console.log(filter);
+  if (!filter) {
+    filter = {};
+  }
+  //  var params = {};
 
   request.get(
     {
@@ -38,7 +41,7 @@ var apiGet = function (req, path, filter, cb) {
         access_token: req.cookies.accessToken,
         "content-type": "application/json",
       },
-      qs: params,
+      qs: filter,
     },
     function (err, httpResponse, body) {
       try {
