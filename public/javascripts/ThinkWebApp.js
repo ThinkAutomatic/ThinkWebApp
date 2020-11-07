@@ -325,14 +325,6 @@
           $.mobile.loading('hide');
           params = {};
           params['message'] = response['message'];
-          params['action'] = {};
-          params['action']['title'] = 'Refresh';
-          params['action']['fn'] = function() {
-            $.mobile.loading('show');
-            window.location.href = '/';
-            return true;
-          };
-          params['action']['color'] = 'lime';
           params['ttl'] = 10000;
           return new $.nd2Toast(params);
         } else if (errorCheck(response)) {

@@ -252,13 +252,6 @@ $(document).on 'pagecreate', ->
         $.mobile.loading('hide')
         params = {}
         params['message'] = response['message']
-        params['action'] = {}
-        params['action']['title'] = 'Refresh'
-        params['action']['fn'] = ->
-          $.mobile.loading('show')
-          window.location.href = '/'
-          return true          
-        params['action']['color'] = 'lime'
         params['ttl'] = 10000
         new $.nd2Toast(params);
       else if errorCheck(response)
