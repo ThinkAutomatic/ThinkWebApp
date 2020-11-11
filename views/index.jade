@@ -64,7 +64,7 @@ block content
 
       if homes.length > 0 && !homes.error
         if cookies.homeId
-          if cookies.userId && home.newDevices
+          if cookies.userId && homes.newDevices
             script.
               new $.nd2Toast({ ttl: 10000, message : 'New device(s) discovered', action : { title : 'link', fn : linkDevicePopup, color: 'lime' } })
 
