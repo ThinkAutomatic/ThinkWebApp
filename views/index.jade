@@ -65,7 +65,8 @@ block content
       if homes.length > 0 && !homes.error
         if cookies.homeId
           if cookies.userId && home.newDevices
-            new $.nd2Toast({ ttl: 10000, message : 'New device(s) discovered', action : { title : 'link', fn : linkDevicePopup, color: 'lime' } })
+            script.
+              new $.nd2Toast({ ttl: 10000, message : 'New device(s) discovered', action : { title : 'link', fn : linkDevicePopup, color: 'lime' } })
 
           if cookies.edit
             a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room
