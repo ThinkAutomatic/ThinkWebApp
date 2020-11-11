@@ -40,7 +40,7 @@ block content
         if homes.error
           h1(class='wow fadeIn', data-wow-delay='0.4s') Attention
             script.
-              new $.nd2Toast({ ttl: 30000, message : homes.error.message });
+              new $.nd2Toast({ ttl: 10000, message : homes.error.message });
         else
           if homes.length
             if (home && home.name)
@@ -60,13 +60,12 @@ block content
     div(role='main', class='ui-content wow fadeIn', data-inset='false', data-wow-delay='0.2s')
       if home.error
         script.
-          new $.nd2Toast({ ttl: 8000, message : '#{home.error.description}' });
+          new $.nd2Toast({ ttl: 10000, message : '#{home.error.description}');
 
       if homes.length > 0 && !homes.error
         if cookies.homeId
-          if cookies.userId && homes.newDevices
-            script.
-              new $.nd2Toast({ ttl: 10000, message : 'New device(s) discovered', action : { title : 'link', fn : linkDevicePopup, color: 'lime' } })
+          if home.newDevices && cookies.userId
+            div(id='newDevices')
 
           if cookies.edit
             a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room

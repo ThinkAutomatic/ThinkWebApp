@@ -18,7 +18,12 @@ $(document).on 'pagecreate', ->
             else
               $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').addClass('clr-grey')
           else if parsedData['newDevices'] && getCookie('userId')
-            new $.nd2Toast({ ttl: 10000, message : "New device(s) discovered", action : { title : "link", fn : linkDevicePopup, color: "lime" } });
+            new $.nd2Toast({ ttl: 30000, message : "New device(s) discovered", action : { title : "link", fn : linkDevicePopup, color: "lime" } });
+  ), 100
+
+  setTimeout (->
+    if $('#newDevices').length && getCookie('userId')
+      new $.nd2Toast({ ttl: 30000, message : "New device(s) discovered", action : { title : "link", fn : linkDevicePopup, color: "lime" } });
   ), 100
 
   jQuery["taPost"] = (path, data, callback) ->

@@ -23,7 +23,7 @@
               }
             } else if (parsedData['newDevices'] && getCookie('userId')) {
               return new $.nd2Toast({
-                ttl: 10000,
+                ttl: 30000,
                 message: "New device(s) discovered",
                 action: {
                   title: "link",
@@ -34,6 +34,19 @@
             }
           }
         };
+      }
+    }), 100);
+    setTimeout((function() {
+      if ($('#newDevices').length && getCookie('userId')) {
+        return new $.nd2Toast({
+          ttl: 30000,
+          message: "New device(s) discovered",
+          action: {
+            title: "link",
+            fn: linkDevicePopup,
+            color: "lime"
+          }
+        });
       }
     }), 100);
     jQuery["taPost"] = function(path, data, callback) {
