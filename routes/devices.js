@@ -2,36 +2,6 @@ var express = require("express");
 var router = express.Router();
 var thinkApi = require("./think-api");
 
-/* GET discover device page */
-router.get("/discover", function (req, res, next) {
-  thinkApi.get(req, "devices/discover", function (err, devicesInfo) {
-    console.log(JSON.stringify(devicesInfo));
-
-    if (req.cookies.homeId) {
-      thinkApi.getByIdVerbose(req, "homes", req.cookies.homeId, function (
-        err,
-        homeInfo
-      ) {
-        if (!homeInfo) homeInfo = {};
-
-        res.render("discover", {
-          cookies: req.cookies,
-          title: "Discover hubs/devices",
-          devicesInfo: devicesInfo,
-          home: homeInfo,
-        });
-      });
-    } else {
-      res.render("discover", {
-        cookies: req.cookies,
-        title: "Discover hubs/devices",
-        devicesInfo: devicesInfo,
-        home: {},
-      });
-    }
-  });
-});
-
 /* GET add device page */
 router.get("/link", function (req, res, next) {
   var path;

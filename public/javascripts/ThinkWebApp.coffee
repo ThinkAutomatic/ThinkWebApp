@@ -4,7 +4,7 @@ $(document).on 'pagecreate', ->
   socket = null
   setTimeout (->
     if (getCookie('accessToken'))
-      socket = new WebSocket("wss://socket.thinkautomatic.io?token=" + getCookie('accessToken'));
+      socket = new WebSocket("wss://socket.thinkautomatic.io?token=" + getCookie('accessToken'))
       socket.onmessage = (evt) ->
         parsedData = JSON.parse(evt.data)
         if parsedData
@@ -17,8 +17,8 @@ $(document).on 'pagecreate', ->
               $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').removeClass('clr-grey')
             else
               $('[data-span-deviceId=' + (parsedData['deviceStatusChange']['deviceId']).toString() + ']').addClass('clr-grey')
-          else if parsedData['newDevices']
-            new $.nd2Toast({ ttl: 8000, message : "New device(s) discovered", action : { title : "show", link : "/devices/discover", color: "lime" } });
+          else if parsedData['newDevices'] && getCookie('userId')
+            new $.nd2Toast({ ttl: 10000, message : "New device(s) discovered", action : { title : "link", fn : linkDevicePopup, color: "lime" } });
   ), 100
 
   jQuery["taPost"] = (path, data, callback) ->
@@ -278,9 +278,6 @@ $(document).on 'pagecreate', ->
           $('.showDevices').trigger('click')
         ), 100
 
-  $('#testButton').click ->
-    launchFullscreen(document.documentElement)
-
   $('.homeChoice').click ->
     $.mobile.loading('show')
     window.location.href = '/?homeId=' + $(this).attr('data-homeId')
@@ -291,27 +288,22 @@ $(document).on 'pagecreate', ->
       errorCheck(response)
       return false
 
-  $('.assocDevicePopup').click (event) ->
-    $('#assocDeviceSubmit').attr('data-directUrl', $(this).attr('data-directUrl'))
-    roomIdSelected = '0'
-    if getCookie('roomId') && !($(this).attr('data-isHub') == 'true') && ($("#assocDeviceRoomSelect option[value='" + getCookie('roomId') + "']").length > 0)
-      roomIdSelected = getCookie('roomId')
-    $('#assocDeviceRoomSelect').val(roomIdSelected).change()    
-    $('#assocDevicePopupTitle').text($(this).attr('data-deviceName'))
-    $('#assocDevicePopupDialog').popup('open')
-
-  $('#assocDeviceSubmit').click (event) ->
-    linkPath = '/devices/link?directUrl=' + $(this).attr('data-directUrl')
-    roomIdSelected = $('#assocDeviceRoomSelect').find('option:selected').val()
-    if roomIdSelected != '0'
-      linkPath += '&roomId=' + roomIdSelected.toString()
-
-    $.mobile.loading('show')
-    window.location.href = linkPath
-    return true
-
   $('.cancelSelectDeviceType').click (event) ->
     $('#deviceTypesDiv').hide()
+
+  $('#linkDeviceRoomSelect').change () ->
+    if $(this).attr('data-initializing') == 'true'
+      $(this).removeAttr('data-initializing')
+      return false
+    else
+      roomIdSelected = $(this).find('option:selected').val()
+      if roomIdSelected == '0'
+        $('#deleteObject').hide()
+        $('#linkDevicePopupDialog').attr('data-reload', 'false')
+        $('#linkDevicePopupDialog').popup('close')
+        setTimeout (->
+          editObject('Add New Room', 'rooms', 'Name for new room', 'false')
+        ), 100
 
   $('#linkDeviceSubmit').click (event) ->
     postData = {}
@@ -319,12 +311,30 @@ $(document).on 'pagecreate', ->
     linkMessage = ''
     $.mobile.loading('show')
     roomIdSelected = $('#linkDeviceRoomSelect').find('option:selected').val()
-    if roomIdSelected == '0'
+    if roomIdSelected == '1'
       linkMessage = 'Link command sent for current home'
       linkPath = 'homes/' + getCookie('homeId').toString() + '/link'
     else
       linkMessage = 'Link command sent for ' + $('#linkDeviceRoomSelect').find('option:selected').text()
       linkPath = 'rooms/' + roomIdSelected.toString() + '/link'
+
+    if $('#linkDeviceSelectDiv').is(":visible")
+      deviceSelected = $('#linkDeviceSelect').find('option:selected')
+      if (deviceSelected.attr('data-directUrl'))
+        linkPath = '/devices/link?directUrl=' + deviceSelected.attr('data-directUrl')
+        if roomIdSelected != '1'
+          linkPath += '&roomId=' + roomIdSelected.toString()
+        $.mobile.loading('show')
+        window.location.href = linkPath
+        return true
+      if (deviceSelected.attr('data-proxyDeviceId'))
+        linkPath += 'Token'
+        $.taPost linkPath, {}, (response) ->
+          if response['linkToken']
+            $.taPost 'commands/' + deviceSelected.attr('data-proxyDeviceId').toString(), response, (cmdResponse) ->
+              $.mobile.loading('hide')
+              alertDialog('', linkMessage)
+      return
 
     if $('#linkDeviceName').attr('data-name')
       postData['name'] = $('#linkDeviceName').attr('data-name')
@@ -355,6 +365,27 @@ $(document).on 'pagecreate', ->
         $.mobile.loading('hide')
         alertDialog('', linkMessage)
    
+  linkDevicePopup = () ->
+    $.taGet 'devices/discover', (deviceInfoArray) ->
+      $('#linkDeviceName').hide()
+      if deviceInfoArray.length == 0
+        $('#linkDeviceType').show()
+        $('#linkDeviceSelectDiv').hide()
+      else
+        $('#linkDeviceType').hide()
+        $('#linkDeviceSelectdiv').show()
+        $.each(deviceInfoArray, (index, value) ->
+          $('#linkDeviceSelect').append('<option value=' + index.toString() + ' data-' + (if value['proxyDeviceId'] then 'proxyDeviceId=' + value['proxyDeviceId'] else 'directUrl=' + value['directUrl']) + '>' + value['name'] + '</option>');
+        )
+        $('#linkDeviceSelect').val(0).change()
+
+    if getCookie('roomId')
+      $('#linkDeviceRoomSelect').attr('data-initializing', 'true')
+      $('#linkDeviceRoomSelect').val(getCookie('roomId')).change()
+    setTimeout (->
+      $('#linkDevicePopupDialog').popup('open')
+    ), 100
+
   $('#deviceTypeSearchSubmit').click (event) ->
     params = {}
     $.mobile.loading('show')
@@ -386,7 +417,7 @@ $(document).on 'pagecreate', ->
     $('#linkDevicePopupDialog').attr('data-reload', 'false')
     $('#linkDevicePopupDialog').popup('close')
     setTimeout (->
-      editObject('Device Name', null, 'Name for new device(s)', 'true')
+      editObject('Device Name', null, 'Name for new device', 'true')
     ), 100
 
   sendSlideEvents = (slider) ->
@@ -454,9 +485,7 @@ $(document).on 'pagecreate', ->
       )
 
   $('.linkDevicePopup').click (event) ->
-    if $(this).attr('data-roomId')
-      $('#linkDeviceRoomSelect').val($(this).attr('data-roomId')).change()
-    $('#linkDevicePopupDialog').popup('open')
+    linkDevicePopup()
 
   handleStep = (element, direction) ->
     parentElem = element.parent() 
@@ -1413,4 +1442,3 @@ $(document).on 'pagecreate', ->
           return false
       )
     )
-

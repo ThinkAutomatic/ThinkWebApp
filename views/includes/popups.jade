@@ -48,15 +48,18 @@ div(data-role='popup', id='linkDevicePopupDialog', data-reload='true')
     h1(class='nd-title', id='linkDevicePopupTitle') Link Device
   div(data-role='content')
     select(id='linkDeviceRoomSelect')
-      option(value='0') Not in a Room
+      option(value='0') [Add Room]
+      option(value='1') Other
       if home && home.rooms
         for room in home.rooms
           option(value=room.roomId)= room.name
+    div(id='linkDeviceSelectDiv')
+      select(id='linkDeviceSelect')
     a(href='#', data-ajax='false', class='ui-btn ui-btn-icon-block', id='linkDeviceType') Device type (optional)
       i(class='fa fa-search', style='padding-left:10px;', data-ajax='false')
     a(href='#', data-ajax='false', class='ui-btn ui-btn-icon-block', id='linkDeviceName') Name (optional)
       i(class='fa fa-pencil-square-o', style='padding-left:10px;', data-ajax='false')
-    button(class='ui-btn', id='linkDeviceSubmit') Submit
+    button(class='ui-btn', id='linkDeviceSubmit') Link
 
 <!-- selectDeviceType popup -->
 div(data-role='popup', id='selectDeviceTypePopupDialog')

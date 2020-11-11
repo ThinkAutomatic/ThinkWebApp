@@ -5,7 +5,7 @@ var router = express.Router();
 var urlToThinkAutomatic = "https://api.thinkautomatic.io/";
 //var urlToThinkAutomatic = "http://localhost:8443/";
 
-const COOKIE_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
+const COOKIE_MAX_AGE = 10 * 365 * 24 * 60 * 60 * 1000;
 
 var trimTrailingChars = function (s, charToTrim) {
   var regExp = new RegExp(charToTrim + "+$");

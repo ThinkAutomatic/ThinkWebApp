@@ -64,14 +64,14 @@ block content
 
       if homes.length > 0 && !homes.error
         if cookies.homeId
+          if cookies.userId && home.newDevices
+            new $.nd2Toast({ ttl: 10000, message : 'New device(s) discovered', action : { title : 'link', fn : linkDevicePopup, color: 'lime' } })
+
           if cookies.edit
             a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room
             a(href='/?edit=false', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-check fa-2x'></i> <p>Exit edit mode</p>
           else
             input(type='text', data-roomName='', class='phraseVal', placeholder='Enter text command here...')
-
-          if home.newDevices
-            a(href='/devices/discover', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Show discovered device(s)            
 
           if home.rooms
             for room in home.rooms
