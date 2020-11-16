@@ -337,12 +337,12 @@ $(document).on 'pagecreate', ->
         $.taPost linkPath, {}, (response) ->
           if response['linkToken']
             $.taPost 'commands/' + deviceSelected.attr('data-proxyDeviceId').toString(), response, (cmdResponse) ->
-              $.mobile.loading('hide')
               alertDialog('', linkMessage)
               setTimeout (->
+                $.mobile.loading('hide')
                 window.location.href = '/'
                 return true
-              ), 2000
+              ), 4000
       return true
 
     if $('#linkDeviceName').attr('data-name')

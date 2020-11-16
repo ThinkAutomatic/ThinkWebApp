@@ -432,12 +432,12 @@
           $.taPost(linkPath, {}, function(response) {
             if (response['linkToken']) {
               return $.taPost('commands/' + deviceSelected.attr('data-proxyDeviceId').toString(), response, function(cmdResponse) {
-                $.mobile.loading('hide');
                 alertDialog('', linkMessage);
                 return setTimeout((function() {
+                  $.mobile.loading('hide');
                   window.location.href = '/';
                   return true;
-                }), 2000);
+                }), 4000);
               });
             }
           });
