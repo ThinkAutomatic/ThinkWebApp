@@ -339,7 +339,11 @@ $(document).on 'pagecreate', ->
             $.taPost 'commands/' + deviceSelected.attr('data-proxyDeviceId').toString(), response, (cmdResponse) ->
               $.mobile.loading('hide')
               alertDialog('', linkMessage)
-      return
+              setTimeout (->
+                window.location.href = '/'
+                return true
+              ), 2000
+      return true
 
     if $('#linkDeviceName').attr('data-name')
       postData['name'] = $('#linkDeviceName').attr('data-name')
@@ -369,6 +373,10 @@ $(document).on 'pagecreate', ->
       $.taPost linkPath, postData, (response) ->
         $.mobile.loading('hide')
         alertDialog('', linkMessage)
+        setTimeout (->
+          window.location.href = '/'
+          return true
+        ), 2000
    
   linkDevicePopup = () ->
     $.taGet 'devices/discover', (deviceInfoArray) ->

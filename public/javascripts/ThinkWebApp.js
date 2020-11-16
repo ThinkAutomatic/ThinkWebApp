@@ -433,12 +433,16 @@
             if (response['linkToken']) {
               return $.taPost('commands/' + deviceSelected.attr('data-proxyDeviceId').toString(), response, function(cmdResponse) {
                 $.mobile.loading('hide');
-                return alertDialog('', linkMessage);
+                alertDialog('', linkMessage);
+                return setTimeout((function() {
+                  window.location.href = '/';
+                  return true;
+                }), 2000);
               });
             }
           });
         }
-        return;
+        return true;
       }
       if ($('#linkDeviceName').attr('data-name')) {
         postData['name'] = $('#linkDeviceName').attr('data-name');
@@ -472,7 +476,11 @@
         $.mobile.loading('show');
         return $.taPost(linkPath, postData, function(response) {
           $.mobile.loading('hide');
-          return alertDialog('', linkMessage);
+          alertDialog('', linkMessage);
+          return setTimeout((function() {
+            window.location.href = '/';
+            return true;
+          }), 2000);
         });
       }
     });
