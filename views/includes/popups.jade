@@ -1,5 +1,5 @@
 <!-- device popup -->
-div(data-role='popup', id='devicePopupDialog', data-reload='true')
+div(data-role='popup', id='devicePopupDialog', data-reload='true', style='min-width:20em;')
   div(data-role='header', data-position='inline')
     a(href='#', data-rel='back', data-ajax='false', class='ui-btn ui-btn-right')
       i(class='fa fa-close')
@@ -101,3 +101,14 @@ div(data-role='popup', id='shareKeyPopupDialog')
   div(data-role='content')
     textarea(id='keyLink', readonly='true', contenteditable='true', cols='30')
     button(class='ui-btn', id='copyLinkToClipboard') Copy link to clipboard
+
+<!-- yes/no help popup -->
+div(data-dismissible='false', data-role='popup', id='yesNoHelpPopupDialog')
+  div(data-role='header', data-position='inline')
+    a(data-ajax='false', class='ui-btn ui-btn-right helpCancelButton')
+      i(class='fa fa-close')
+    h1(class='nd-title', class='popupTitle') 
+  div(data-role='content')
+    p(class='prompt') Prompt
+    button(type='button', class='ui-btn', id='helpYes') Yes
+    button(type='button', class='ui-btn', id='helpNo') No
