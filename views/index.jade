@@ -69,7 +69,6 @@ block content
 
           if cookies.edit
             a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room
-            a(href='/?edit=false', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-check fa-2x'></i> <p>Exit edit mode</p>
           else
             input(type='text', data-roomName='', class='phraseVal', placeholder='Enter text command here...')
 
@@ -80,9 +79,9 @@ block content
                   if !(room.devices && room.devices.length) && cookies.userId
                     a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add devices here</p>
                 if cookies.edit
-                  a(data-roomId='#{room.roomId}', data-roomName='#{room.name}', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices in #{room.name}
-                  a(href='#room-#{room.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit #{room.name} devices
                   a(data-ajax='false', class='ui-btn ui-btn-icon-block editRoom', data-roomId=room.roomId, data-roomName=room.name) <i class='fa fa-pencil-square-o fa-2x'></i> <p>Rename #{room.name}</p>
+                  a(href='#room-#{room.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit #{room.name} devices
+                  a(data-roomId='#{room.roomId}', data-roomName='#{room.name}', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices in #{room.name}
                   a(data-ajax='false', class='ui-btn ui-btn-icon-block deleteObject', data-path='rooms/#{room.roomId}', data-objectName=room.name) <i class='fa fa-trash fa-2x'></i> <p>Delete #{room.name}</p>
                 if cookies.edit || (room.devices && room.devices.length)
                   form
@@ -110,5 +109,22 @@ block content
         if cookies.userId
           a(class='ui-btn ui-btn-icon-block newHome') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i>Add new home
         else
-          a(href='/users/signin', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-sign-in fa-2x'></i> <p>Sign in to get started</p>
+          a(href='/users/signin', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-sign-in fa-2x'></i> <p>Sign in/sign up to get started</p>
 
+      div(data-role='footer', data-position='fixed')
+        div(class='row center-xs')
+          if cookies.userId
+            div(class='col-xs-4')
+              div(class='box')
+                if cookies.edit
+                  a(href='/?edit=false', data-ajax='false', class='ui-btn ui-mini nd2-btn-icon-block footer-btn') <i class='fa fa-check fa-2x'></i> Done editing
+                else
+                  a(href='/?edit=true', data-ajax='false', class='ui-btn ui-mini nd2-btn-icon-block footer-btn') <i class='fa fa-pencil-square-o fa-2x'></i> Edit mode
+
+          div(class='col-xs-4')
+            div(class='box')
+              a(href='/', data-ajax='false', class='ui-btn ui-mini nd2-btn-icon-block footer-btn') <i class='zmdi zmdi-refresh zmd-2x'></i> Refresh
+
+          div(class='col-xs-4')
+            div(class='box')
+              a(href='#', class='ui-btn ui-mini nd2-btn-icon-block footer-btn') <i class='zmdi zmdi-help-outline zmd-2x'></i> Help

@@ -12,9 +12,9 @@ div(data-role='panel', id='leftpanel', data-display='overlay', data-position-fix
         a(href='/users/settings', data-ajax='false') <i class='fa fa-gear'></i> Settings
       li
         if cookies.edit
-          a(href='/?edit=false', data-ajax='false') <i class='fa fa-check'></i> Exit edit mode
+          a(href='/?edit=false', data-ajax='false') <i class='fa fa-check'></i> Done editing
         else
-          a(href='/?edit=true', data-ajax='false') <i class='fa fa-pencil-square-o'></i> Enter edit mode
+          a(href='/?edit=true', data-ajax='false') <i class='fa fa-pencil-square-o'></i> Edit mode
       if home.homeId && home.name
         li
           a(href='/homes/keys', data-ajax='false') <i class='zmdi zmdi-home'></i> Manage keys for '#{home.name}'
