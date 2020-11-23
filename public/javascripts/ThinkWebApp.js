@@ -1761,7 +1761,7 @@
         case 40:
           return yesNoHelpPopup('Pair Luminode', 'Tap the Luminode to turn it either on or off. Did the indicator on the front of it turn a solid red color?');
         case 50:
-          return yesNoHelpPopup('Pair Luminode', 'Using your mobile device try connecting to an open WiFi network named "ThinkAutoNew-(some id number)". After you connect to that network your mobile device should be automatically redirected to a WiFi setup process. Have you already tried this an ran into an issue?');
+          return yesNoHelpPopup('Pair Luminode', 'Using your mobile device try connecting to an open WiFi network named "ThinkAutoNew-(some id number)". After you connect to that network your mobile device should be automatically redirected to a WiFi setup process. Have you already tried this and ran into an issue?');
         case 60:
           return yesNoHelpPopup('Pair Luminode', 'Did your mobile device connect to the ThinkAutoNew- network but not redirect you to a setup screen?');
         case 70:
