@@ -7,6 +7,10 @@ div(data-role='panel', id='leftpanel', data-display='overlay', data-position-fix
         a(class='signoutButton', data-ajax='false') <i class='fa fa-sign-out'></i> Sign out user '#{cookies.userName}' 
       else
         a(href='/users/signin', data-ajax='false') <i class='fa fa-sign-in'></i> Sign in 
+    li
+      a(class='helpButton', data-ajax='false') <i class='zmdi zmdi-help-outline'></i> Help 
+    li
+      a(href='/', data-ajax='false') <i class='zmdi zmdi-refresh'></i> Refresh 
     if cookies.userId
       li
         a(href='/users/settings', data-ajax='false') <i class='fa fa-gear'></i> Settings

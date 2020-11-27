@@ -1499,28 +1499,28 @@ $(document).on 'pagecreate', ->
       when 20, 410
         yesNoHelpPopup('Type of device', 'Is the device you need help with a Luminode Dimmer Switch?')
       when 30
-        yesNoHelpPopup('Pair Luminode', 'Is this first Luminode you are attempting to pair with or do you already have one or more already working?', 'First One', 'Others working')
+        yesNoHelpPopup('Pair Luminode', 'Is this the first Luminode you are attempting to pair with or do you already have one or more already working?', 'First One', 'Others working')
       when 40
-        yesNoHelpPopup('Pair Luminode', 'Tap the Luminode to turn it either on or off. Did the indicator on the front of it turn a solid red color?')
+        yesNoHelpPopup('Pair Luminode', 'Tap the Luminode you want to pair to turn it either on or off. Did the indicator on the front of it turn a solid red color?')
       when 50
         yesNoHelpPopup('Pair Luminode', 'Using your mobile device try connecting to an open WiFi network named "ThinkAutoNew-(some id number)". After you connect to that network your mobile device should be automatically redirected to a WiFi setup process. Have you already tried this and ran into an issue?')
       when 60
         yesNoHelpPopup('Pair Luminode', 'Did your mobile device connect to the ThinkAutoNew- network but not redirect you to a setup screen?')
       when 70
-        yesNoHelpPopup('Pair Luminode', 'If you have not already tried this, tell your mobile device to "forget" the ThinkAutoNew- network (exact process varies depending on your mobile device). Then attempt to reconnect to the same network again. Have you already tried this and want to try something else?')
+        yesNoHelpPopup('Pair Luminode', 'Let\'s tell your mobile device to "forget" the ThinkAutoNew- network (exact process varies depending on your mobile device wifi settings). Then attempt to reconnect to the same network again. Have you already tried this and want to try something else?')
       when 80
-        yesNoHelpPopup('Pair Luminode', 'If you have not already tried this, press both the up/on button and the down/off button on the Luminode at the same time, which may require a slightly firm press, then release. This will cause the Luminode to restart itself. After a few seconds press one of the buttons on the Luminode to turn the indicator red again. Then attempt to connect to the ThinkAutoNew- network again. Have you already tried this and want to try something else?')
+        yesNoHelpPopup('Pair Luminode', 'Let\'s try restarting your Luminode. Press both the up/on button and the down/off button on the Luminode at the same time, which may require a slightly firm press, then release. After a few seconds press one of the buttons on the Luminode to turn the indicator red again. Then attempt to connect to the ThinkAutoNew- network again. Have you already tried this and want to try something else?')
       when 90
         yesNoHelpPopup('Pair Luminode', 'Did the indicator turn cyan (light blue)?')
       when 100
-        yesNoHelpPopup('Pair Luminode', 'This may mean that your Luminode is attempting to connect to a Luminode network belonging to a neighbor. Try tapping your Luminode again until the indicator turns red. Has the indicator turned red?')
+        yesNoHelpPopup('Pair Luminode', 'This may mean that your Luminode is attempting to connect to a network belonging to a neighbor. Try tapping your Luminode again until the indicator turns red. Has the indicator turned red?')
       when 120
         helpPopupInfo('Pair Luminode', 'Let\'s try doing a network reset on your Luminode. Press the down/off button and hold it for at least 20 seconds. You can release it when the light that your Luminode controls flashes and the indicator on the front blinks a sequence of different colors. After this, wait a few more seconds then tap the Luminode to begin attempting earlier steps.')
       when 130
         helpPopupInfo('Pair Luminode', 'Follow the steps on the setup screen. You can restart this help system if you continue to have trouble or reach out to us via email at support@thinkautomatic.com')
 
       when 200
-        yesNoHelpPopup('Pair Luminode', 'Tap the Luminode you are attempting to pair to turn it either on or off. Did the indicator on the front of it turn cyan (light blue)?')
+        yesNoHelpPopup('Pair Luminode', 'Tap the Luminode you are attempting to pair with to turn it either on or off. Did the indicator on the front of it turn cyan (light blue)?')
       when 210
         yesNoHelpPopup('Pair Luminode', 'Is it blinking or is it staying on solid cyan?', 'blinking', 'solid')
       when 220
