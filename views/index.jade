@@ -11,7 +11,7 @@ block content
           if home.devices && home.devices.length
             for device in home.devices
               div(class='col-xs-auto')
-                a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.online ? '' : ' class=\'clr-grey\''} data-span-deviceId=#{device.deviceId}>#{device.name ? device.name : 'Unnamed Device'}</span>
+                a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.isOnline ? '' : ' class=\'clr-grey\''} data-span-deviceId=#{device.deviceId}>#{device.name ? device.name : 'Unnamed Device'}</span>
           else
             div(class='col-xs-auto')
               a(class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button')<span class=\'clr-grey\'>No devices with an unspecified location</span>
@@ -23,7 +23,7 @@ block content
               if room.devices && room.devices.length
                 for device in room.devices
                   div(class='col-xs-auto')
-                    a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.online ? '' : ' class=\'clr-grey\''} data-span-deviceId=#{device.deviceId}>#{device.name ? device.name : 'Unnamed Device'}</span>
+                    a(data-deviceId=device.deviceId, class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button device')<i class="zmdi zmdi-remote-control-alt zmd-2x"></i><span#{device.isOnline ? '' : ' class=\'clr-grey\''} data-span-deviceId=#{device.deviceId}>#{device.name ? device.name : 'Unnamed Device'}</span>
               else
                 div(class='col-xs-auto')
                   a(class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button')<span class=\'clr-grey\'>No devices in #{room.name}</span>
