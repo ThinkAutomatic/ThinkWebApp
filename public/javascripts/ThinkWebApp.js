@@ -1759,7 +1759,7 @@
         case 30:
           return yesNoHelpPopup('Pair Luminode', 'Is this the first Luminode you are attempting to pair with or do you already have one or more already working?', 'First One', 'Others working');
         case 40:
-          return yesNoHelpPopup('Pair Luminode', 'Tap the Luminode you want to pair to turn it either on or off. Did the indicator on the front of it turn a solid red color?');
+          return yesNoHelpPopup('Pair Luminode', 'Tap the Luminode you want to pair with to turn it either on or off. Did the indicator on the front of it turn a solid red color?');
         case 50:
           return yesNoHelpPopup('Pair Luminode', 'Using your mobile device try connecting to an open WiFi network named "ThinkAutoNew-(some id number)". After you connect to that network your mobile device should be automatically redirected to a WiFi setup process. Have you already tried this and ran into an issue?');
         case 60:
@@ -1773,9 +1773,9 @@
         case 100:
           return yesNoHelpPopup('Pair Luminode', 'This may mean that your Luminode is attempting to connect to a network belonging to a neighbor. Try tapping your Luminode again until the indicator turns red. Has the indicator turned red?');
         case 120:
-          return helpPopupInfo('Pair Luminode', 'Let\'s try doing a network reset on your Luminode. Press the down/off button and hold it for at least 20 seconds. You can release it when the light that your Luminode controls flashes and the indicator on the front blinks a sequence of different colors. After this, wait a few more seconds then tap the Luminode to begin attempting earlier steps.');
+          return helpPopupInfo('Pair Luminode', 'Let\'s try doing a network reset on your Luminode. Press the down/off button and hold it for at least 20 seconds. You can release it when the light that your Luminode controls flashes and the indicator on the front blinks a sequence of different colors. After this, wait a few more seconds then tap the Luminode to begin attempting earlier steps. You can restart this help system if you have trouble or reach out to us via email at support@thinkautomatic.com');
         case 130:
-          return helpPopupInfo('Pair Luminode', 'Follow the steps on the setup screen. You can restart this help system if you continue to have trouble or reach out to us via email at support@thinkautomatic.com');
+          return helpPopupInfo('Pair Luminode', 'After following the steps on the setup screen you should see a message popup on this web app indicating that a device has been discovered (you may need to tap the refresh button). Tap on the word "Link" and follow the instructions. Once linked the indicator on the Luminode should change several different colors as it sets itself up and may not be responsive for up to a minute. This is normal. You can restart this help system if you have trouble or reach out to us via email at support@thinkautomatic.com');
         case 200:
           return yesNoHelpPopup('Pair Luminode', 'Tap the Luminode you are attempting to pair with to turn it either on or off. Did the indicator on the front of it turn cyan (light blue)?');
         case 210:
@@ -1790,9 +1790,9 @@
           });
           return yesNoHelpPopup('Action taken', 'I tried a remedy on my end. Please wait up to about 20 seconds then tap the Luminode again. The indicator may turn red, in which case tap it again to see if it turns cyan. Did it turn cyan?');
         case 240:
-          return yesNoHelpPopup('Pair Luminode', 'Did you see message popup saying that a new device has been discovered?');
+          return yesNoHelpPopup('Pair Luminode', 'Did you see a message popup on this web app saying that a new device has been discovered (you may need to tap the refresh button)?');
         case 250:
-          return helpPopupInfo('Pair Luminode', 'Tap on the word "Link" and follow the instructions.');
+          return helpPopupInfo('Pair Luminode', 'Tap on the word "Link" and follow the instructions. Once linked the indicator on the Luminode should change several different colors as it sets itself up and may not be responsive for up to a minute. This is normal. You can restart this help system if you have trouble or reach out to us via email at support@thinkautomatic.com');
         case 260:
           return yesNoHelpPopup('Pair Luminode', 'This may mean that your Luminode is attempting to connect to a Luminode network belonging to a neighbor. Try tapping your Luminode again. Did it blink and turn cyan again or did it turn red?', 'Cyan', 'Red');
         case 270:
@@ -1834,7 +1834,7 @@
           case 40:
             return handleHelpYesNo(yesNoAnswer, 50, 90);
           case 50:
-            return handleHelpYesNo(yesNoAnswer, 70, 60);
+            return handleHelpYesNo(yesNoAnswer, 60, 130);
           case 60:
             return handleHelpYesNo(yesNoAnswer, 70, 130);
           case 70:
