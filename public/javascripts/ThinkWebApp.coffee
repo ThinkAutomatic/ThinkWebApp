@@ -252,7 +252,7 @@ $(document).on 'pagecreate', ->
     postData['phrase'] = $('.nd2Tabs-active').attr('data-roomName') + ' ' + phraseElem.val()
     phraseElem.val('')
     $.mobile.loading('show')
-    $.taPost 'commands/' + getCookie('homeId').toString() + '/phrase', postData, (response) ->
+    $.taPost 'commands/' + getCookie('roomId').toString() + '/phrase', postData, (response) ->
       if response && response['message']
         $.mobile.loading('hide')
         params = {}

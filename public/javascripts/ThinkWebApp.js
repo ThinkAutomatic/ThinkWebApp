@@ -332,7 +332,7 @@
       postData['phrase'] = $('.nd2Tabs-active').attr('data-roomName') + ' ' + phraseElem.val();
       phraseElem.val('');
       $.mobile.loading('show');
-      return $.taPost('commands/' + getCookie('homeId').toString() + '/phrase', postData, function(response) {
+      return $.taPost('commands/' + getCookie('roomId').toString() + '/phrase', postData, function(response) {
         var params;
         if (response && response['message']) {
           $.mobile.loading('hide');
