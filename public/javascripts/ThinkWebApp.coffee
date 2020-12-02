@@ -672,6 +672,18 @@ $(document).on 'pagecreate', ->
     $('#deleteObject').show()    
     editObject($(this).attr('data-roomName'), 'rooms/' + $(this).attr('data-roomId'), 'New name for ' + $(this).attr('data-roomName'), 'false')
 
+  $('.roomOptionCheckbox').click ->
+    if (($(this).attr('data-prop') == 'mimic') && ($(this).prop('checked')))
+      $('#autoOff-' + $(this).attr('data-roomId')).prop('checked', true).checkboxradio("refresh")
+    else if (($(this).attr('data-prop') == 'autoOff') && (!$(this).prop('checked')))
+      $('#mimic-' + $(this).attr('data-roomId')).prop('checked', false).checkboxradio("refresh")
+    postData = {}
+    postData['mimic'] = $('#mimic-' + $(this).attr('data-roomId')).prop('checked');
+    postData['autoOff'] = $('#autoOff-' + $(this).attr('data-roomId')).prop('checked');
+    $.taPost 'rooms/' + $(this).attr('data-roomId').toString(), postData, (response) ->
+      errorCheck(response)
+      return false
+
   $('.editScene').click (event) ->
     $('#deleteObject').show()    
     editObject($(this).attr('data-sceneName'), 'scenes/' + $(this).attr('data-sceneId'), 'New name for ' + $(this).attr('data-sceneName'), 'false')

@@ -96,6 +96,15 @@ block content
                               i(class='fa fa-pencil-square-o fa-2x editScene sceneChoice', style='padding-left:10px;', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName)
                             else if room.preferredSceneId == scene.sceneId
                               span(class='clr-#{theme}')   &lt;- [preferred]
+                  if cookies.edit
+                    input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='mimic', name='mimic-#{room.roomId}', id='mimic-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.mimic)
+                    label(for='mimic-#{room.roomId}') Mimic preferences
+                    input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOff', name='autoOff-#{room.roomId}', id='autoOff-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOff)
+                    label(for='autoOff-#{room.roomId}') Turn devices off automatically
+                  else if room.mimic
+                    p(class='clr-grey', style='font-size:small;') mimic preferences enabled
+                  else if room.autoOff
+                    p(class='clr-grey', style='font-size:small;') auto turn off enabled
             div(data-role='nd2tab', data-tab='room-0')
               if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
                 a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>
