@@ -98,13 +98,25 @@ block content
                               span(class='clr-#{theme}')   &lt;- [preferred]
                   if cookies.edit
                     input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='mimic', name='mimic-#{room.roomId}', id='mimic-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.mimic)
-                    label(for='mimic-#{room.roomId}') Mimic preferences
+                    label(for='mimic-#{room.roomId}') Mimic preferences when devices are already on
+                    input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOn', name='autoOn-#{room.roomId}', id='autoOn-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOn)
+                    label(for='autoOn-#{room.roomId}') Turn devices on automatically
                     input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOff', name='autoOff-#{room.roomId}', id='autoOff-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOff)
                     label(for='autoOff-#{room.roomId}') Turn devices off automatically
-                  else if room.mimic
+                  else if room.mimic && room.autoOn && room.autoOff
                     p(class='clr-grey', style='font-size:small;') mimic preferences enabled
+                  else if room.mimic && room.autoOn
+                    p(class='clr-grey', style='font-size:small;') mimic preferences with auto-off disabled
+                  else if room.mimic && room.autoOff
+                    p(class='clr-grey', style='font-size:small;') mimic preferences with auto-on disabled
+                  else if room.mimic
+                    p(class='clr-grey', style='font-size:small;') mimic preferences with auto-on/off disabled
+                  else if room.autoOn && room.autoOff
+                    p(class='clr-grey', style='font-size:small;') auto-on/off enabled
+                  else if room.autoOn
+                    p(class='clr-grey', style='font-size:small;') auto-on enabled
                   else if room.autoOff
-                    p(class='clr-grey', style='font-size:small;') auto turn off enabled
+                    p(class='clr-grey', style='font-size:small;') auto-off enabled
             div(data-role='nd2tab', data-tab='room-0')
               if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
                 a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>

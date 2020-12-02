@@ -675,11 +675,11 @@ $(document).on 'pagecreate', ->
   $('.roomOptionCheckbox').click ->
     if (($(this).attr('data-prop') == 'mimic') && ($(this).prop('checked')))
       $('#autoOff-' + $(this).attr('data-roomId')).prop('checked', true).checkboxradio("refresh")
-    else if (($(this).attr('data-prop') == 'autoOff') && (!$(this).prop('checked')))
-      $('#mimic-' + $(this).attr('data-roomId')).prop('checked', false).checkboxradio("refresh")
+      $('#autoOn-' + $(this).attr('data-roomId')).prop('checked', true).checkboxradio("refresh")
     postData = {}
     postData['mimic'] = $('#mimic-' + $(this).attr('data-roomId')).prop('checked');
     postData['autoOff'] = $('#autoOff-' + $(this).attr('data-roomId')).prop('checked');
+    postData['autoOn'] = $('#autoOn-' + $(this).attr('data-roomId')).prop('checked');
     $.taPost 'rooms/' + $(this).attr('data-roomId').toString(), postData, (response) ->
       errorCheck(response)
       return false
