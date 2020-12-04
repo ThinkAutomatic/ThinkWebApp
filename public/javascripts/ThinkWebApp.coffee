@@ -635,10 +635,10 @@ $(document).on 'pagecreate', ->
                     selectedStr = '" selected="selected'
 
                   control.append('<select id="' + flipId + '" name="' + flipId + '" class="flipControl" data-deviceId="' + deviceId.toString() + '" data-actionName="' + actionType['name'] + '" data-role="flipswitch"><option value="' + actionType['deactivate'] + '">' + actionType['deactivate'] + '</option><option value="' + actionType['activate'] + selectedStr + '">' + actionType['activate'] + '</option></select>').trigger('create')
-          if deviceInfo['directUrl']
-            $('#deviceDirectUrl').attr('href', deviceInfo['directUrl'])
-            $('#deviceDirectUrlDiv').show() 
-            $('#devicePopupSettings').show()                
+#          if deviceInfo['directUrl']
+#            $('#deviceDirectUrl').attr('href', deviceInfo['directUrl'])
+#            $('#deviceDirectUrlDiv').show() 
+#            $('#devicePopupSettings').show()                
           $('#devicePopupDialog').popup('reposition', {positionTo: 'window'});
       else
         $('#devicePopupTitle').text('Error').append(cache)

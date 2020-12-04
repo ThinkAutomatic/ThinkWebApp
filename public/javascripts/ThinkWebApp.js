@@ -777,11 +777,10 @@
                 }
               });
             }
-            if (deviceInfo['directUrl']) {
-              $('#deviceDirectUrl').attr('href', deviceInfo['directUrl']);
-              $('#deviceDirectUrlDiv').show();
-              $('#devicePopupSettings').show();
-            }
+            //          if deviceInfo['directUrl']
+            //            $('#deviceDirectUrl').attr('href', deviceInfo['directUrl'])
+            //            $('#deviceDirectUrlDiv').show() 
+            //            $('#devicePopupSettings').show()                
             return $('#devicePopupDialog').popup('reposition', {
               positionTo: 'window'
             });
