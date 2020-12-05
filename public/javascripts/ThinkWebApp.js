@@ -795,6 +795,7 @@
     });
     editObject = function(title, path, placeholder, dataLink) {
       $.mobile.loading('hide');
+      $('#editHomeProps').hide();
       $('#editObjectPopupTitle').text(title);
       $('#editObjectSubmit').attr('data-path', path);
       $('#editObjectSubmit').attr('data-link', dataLink);
@@ -815,7 +816,8 @@
     });
     $('.editHome').click(function() {
       $('#deleteObject').show();
-      return editObject($(this).attr('data-homeName'), 'homes/' + getCookie('homeId'), 'New name for ' + $(this).attr('data-homeName'), 'false');
+      editObject($(this).attr('data-homeName'), 'homes/' + getCookie('homeId'), 'New name for ' + $(this).attr('data-homeName'), 'false');
+      return $('#editHomeProps').show();
     });
     $('.editRoom').click(function() {
       $('#deleteObject').show();
@@ -875,7 +877,23 @@
         $('#editObjectPopupDialog').popup('close');
         return false;
       } else {
-        postData['name'] = $('#editObjectVal').val();
+        if ($('#editHomeProps').is(":visible")) {
+          postData['address'] = {};
+          if ($('#editHomePostalCode').val()) {
+            postData['address']['postalCode'] = $('#editHomePostalCode').val();
+          }
+          if ($('#editHomeLat').val()) {
+            postData['address']['latitude'] = $('#editHomeLat').val();
+          }
+          if ($('#editHomeLong').val()) {
+            postData['address']['longitude'] = $('#editHomeLong').val();
+          }
+          if ($('#editObjectVal').val()) {
+            postData['name'] = $('#editObjectVal').val();
+          }
+        } else {
+          postData['name'] = $('#editObjectVal').val();
+        }
         postData['homeId'] = Number(getCookie('homeId'));
         $.mobile.loading('show');
         return $.taPost($(this).attr('data-path'), postData, function(response) {

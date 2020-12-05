@@ -646,6 +646,7 @@ $(document).on 'pagecreate', ->
 
   editObject = (title, path, placeholder, dataLink) ->
     $.mobile.loading('hide')
+    $('#editHomeProps').hide()
     $('#editObjectPopupTitle').text(title)
     $('#editObjectSubmit').attr('data-path', path)
     $('#editObjectSubmit').attr('data-link', dataLink)
@@ -667,6 +668,7 @@ $(document).on 'pagecreate', ->
   $('.editHome').click ->
     $('#deleteObject').show()    
     editObject($(this).attr('data-homeName'), 'homes/' + getCookie('homeId'), 'New name for ' + $(this).attr('data-homeName'), 'false')
+    $('#editHomeProps').show()
 
   $('.editRoom').click ->
     $('#deleteObject').show()    
@@ -718,7 +720,18 @@ $(document).on 'pagecreate', ->
       $('#editObjectPopupDialog').popup('close')
       return false
     else
-      postData['name'] = $('#editObjectVal').val()
+      if $('#editHomeProps').is(":visible")
+        postData['address'] = {};
+        if ($('#editHomePostalCode').val())
+          postData['address']['postalCode'] = $('#editHomePostalCode').val()
+        if ($('#editHomeLat').val())
+          postData['address']['latitude'] = $('#editHomeLat').val()
+        if ($('#editHomeLong').val())
+          postData['address']['longitude'] = $('#editHomeLong').val()
+        if ($('#editObjectVal').val())
+          postData['name'] = $('#editObjectVal').val()
+      else
+        postData['name'] = $('#editObjectVal').val()
       postData['homeId'] = Number(getCookie('homeId'))
       $.mobile.loading('show')
       $.taPost $(this).attr('data-path'), postData, (response) ->

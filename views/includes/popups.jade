@@ -28,7 +28,7 @@ div(data-role='popup', id='devicePopupDialog', data-reload='true', style='min-wi
         fieldset(data-role='controlgroup', id='devicePopupSettingControls')
 
 <!-- editObject popup -->
-div(data-role='popup', id='editObjectPopupDialog')
+div(data-role='popup', id='editObjectPopupDialog', style='min-width:20em;')
   div(data-role='header', data-position='inline')
     a(href='#', data-rel='back', data-ajax='false', class='ui-btn ui-btn-right')
       i(class='fa fa-close')
@@ -38,6 +38,14 @@ div(data-role='popup', id='editObjectPopupDialog')
   div(data-role='content')
     form(class='editObjectForm')
       input(type='text', id='editObjectVal', name='editObjectVal')
+      div(id='editHomeProps')
+        fieldset(data-role='controlgroup')
+          Legend For sunrise/sunset (optional):
+          input(type='text', id='editHomePostalCode', name='editHomePostalCode', placeholder='Postal code' + (home && home.address && home.address.postalCode ? ' (currently #{home.address.postalCode})' : ''))
+        fieldset(data-role='controlgroup')
+          Legend Or:
+          input(type='text', id='editHomeLat', name='editHomeLat', placeholder='Latitude' + (home && home.address && home.address.latitude ? ' (currently #{home.address.latitude})' : ''))
+          input(type='text', id='editHomeLong', name='editHomeLong', placeholder='Longitude' + (home && home.address && home.address.longitude ? ' (currently #{home.address.longitude})' : ''))
       button(class='ui-btn', id='editObjectSubmit') Submit
 
 <!-- linkDevice popup -->
