@@ -81,7 +81,7 @@ block content
                 if cookies.edit
                   a(data-ajax='false', class='ui-btn ui-btn-icon-block editRoom', data-roomId=room.roomId, data-roomName=room.name) <i class='fa fa-pencil-square-o fa-2x'></i> <p>Rename #{room.name}</p>
                   a(href='#room-#{room.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit #{room.name} devices
-                  a(data-roomId='#{room.roomId}', data-roomName='#{room.name}', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices in #{room.name}
+                  // a(data-roomId='#{room.roomId}', data-roomName='#{room.name}', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices in #{room.name}
                   a(data-ajax='false', class='ui-btn ui-btn-icon-block deleteObject', data-path='rooms/#{room.roomId}', data-objectName=room.name) <i class='fa fa-trash fa-2x'></i> <p>Delete #{room.name}</p>
                 if cookies.edit || (room.devices && room.devices.length)
                   form
@@ -131,7 +131,7 @@ block content
               if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
                 a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>
               if cookies.edit
-                a(data-roomId='0', data-roomName='Other', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices not placed in a room
+                // a(data-roomId='0', data-roomName='Other', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices not placed in a room
                 if home.devices && home.devices.length
                   a(href='#room-0-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit devices not placed in a room
         else
