@@ -68,7 +68,8 @@ block content
             div(id='newDevices')
 
           if cookies.edit
-            a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room
+            if (home && home.name)
+              a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room
           else
             input(type='text', data-roomName='', class='phraseVal', placeholder='Enter text command here...')
 
