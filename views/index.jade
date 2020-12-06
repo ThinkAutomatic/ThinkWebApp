@@ -120,12 +120,13 @@ block content
                         label(for='autoOffSunset-#{room.roomId}') at sunset
                         input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOff', name='autoOff-#{room.roomId}', id='autoOff-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOff)
                         label(for='autoOff-#{room.roomId}') at anytime (learned)
-                    else if room.mimic
-                      p(class='clr-grey', style='font-size:small;')='mimic preferences ' + (!room.autoOn || !room.autoOff ? '(some automatic behaviors disabled)' : 'enabled')
-                    else if (room.autoOn || room.autoOff)
-                      p(class='clr-grey', style='font-size:small;')=(room.autoOn && room.autoOff ? 'learned when to turn on/off enabled' : 'learned when to turn ' + (room.autoOn ? 'on':'off') + ' enabled')
-                    if (room.autoOnSunrise || room.autoOffSunrise || room.autoOnSunset || room.autoOffSunset)
-                      p(class='clr-grey', style='font-size:small;')=((room.autoOnSunrise || room.autoOffSunrise) ? 'turn ' + (room.autoOnSunrise ? 'on' : 'off') + ' at sunrise' + (room.autoOnSunset || room.autoOffSunset ? ' and ':''): '') + ((room.autoOnSunset || room.autoOffSunset) ? 'turn ' + (room.autoOnSunset ? 'on' : 'off') + ' at sunset' : '') + ' enabled'
+                    else 
+                      if room.mimic
+                        p(class='clr-grey', style='font-size:small;')='mimic preferences ' + (!room.autoOn || !room.autoOff ? '(some automatic behaviors disabled)' : 'enabled')
+                      else if (room.autoOn || room.autoOff)
+                        p(class='clr-grey', style='font-size:small;')=(room.autoOn && room.autoOff ? 'learned when to turn on/off enabled' : 'learned when to turn ' + (room.autoOn ? 'on':'off') + ' enabled')
+                      if (room.autoOnSunrise || room.autoOffSunrise || room.autoOnSunset || room.autoOffSunset)
+                        p(class='clr-grey', style='font-size:small;')=((room.autoOnSunrise || room.autoOffSunrise) ? 'turn ' + (room.autoOnSunrise ? 'on' : 'off') + ' at sunrise' + (room.autoOnSunset || room.autoOffSunset ? ' and ':''): '') + ((room.autoOnSunset || room.autoOffSunset) ? 'turn ' + (room.autoOnSunset ? 'on' : 'off') + ' at sunset' : '') + ' enabled'
             div(data-role='nd2tab', data-tab='room-0')
               if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
                 a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>
