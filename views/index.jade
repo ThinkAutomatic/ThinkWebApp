@@ -96,27 +96,36 @@ block content
                               i(class='fa fa-pencil-square-o fa-2x editScene sceneChoice', style='padding-left:10px;', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName)
                             else if room.preferredSceneId == scene.sceneId
                               span(class='clr-#{theme}')   &lt;- [preferred]
-                  if cookies.edit
-                    input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='mimic', name='mimic-#{room.roomId}', id='mimic-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.mimic)
-                    label(for='mimic-#{room.roomId}') Mimic preferences when devices are already on
-                    input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOn', name='autoOn-#{room.roomId}', id='autoOn-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOn)
-                    label(for='autoOn-#{room.roomId}') Turn devices on automatically
-                    input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOff', name='autoOff-#{room.roomId}', id='autoOff-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOff)
-                    label(for='autoOff-#{room.roomId}') Turn devices off automatically
-                  else if room.mimic && room.autoOn && room.autoOff
-                    p(class='clr-grey', style='font-size:small;') mimic preferences enabled
-                  else if room.mimic && room.autoOn
-                    p(class='clr-grey', style='font-size:small;') mimic preferences with auto-off disabled
-                  else if room.mimic && room.autoOff
-                    p(class='clr-grey', style='font-size:small;') mimic preferences with auto-on disabled
-                  else if room.mimic
-                    p(class='clr-grey', style='font-size:small;') mimic preferences with auto-on/off disabled
-                  else if room.autoOn && room.autoOff
-                    p(class='clr-grey', style='font-size:small;') auto-on/off enabled
-                  else if room.autoOn
-                    p(class='clr-grey', style='font-size:small;') auto-on enabled
-                  else if room.autoOff
-                    p(class='clr-grey', style='font-size:small;') auto-off enabled
+                    if cookies.edit
+                      fieldset
+                        legend Mimic your patterns
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='mimic', name='mimic-#{room.roomId}', id='mimic-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.mimic)
+                        label(for='mimic-#{room.roomId}') Mimic patterns when devices are already on
+                      fieldset(data-role='controlgroup', data-type='horizontal', data-mini='true')
+                        - var latLongSet = (home && home.address && home.address.latitude && home.address.longitude ? true : false)
+                        legend When to turn on:
+                        if !latLongSet
+                          p(class='editHome', data-ajax='false', data-homeName=home.name) (To enable sunrise/sunset first set home location by tapping this message)
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOnSunrise', name='autoOnSunrise-#{room.roomId}', id='autoOnSunrise-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOnSunrise, disabled = !latLongSet)
+                        label(for='autoOnSunrise-#{room.roomId}') at sunrise
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOnSunset', name='autoOnSunset-#{room.roomId}', id='autoOnSunset-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOnSunset, disabled = !latLongSet)
+                        label(for='autoOnSunset-#{room.roomId}') at sunset
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOn', name='autoOn-#{room.roomId}', id='autoOn-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOn)
+                        label(for='autoOn-#{room.roomId}') at anytime (learned)
+                      fieldset(data-role='controlgroup', data-type='horizontal', data-mini='true')
+                        legend When to turn off:
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOffSunrise', name='autoOffSunrise-#{room.roomId}', id='autoOffSunrise-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOffSunrise, disabled = !latLongSet)
+                        label(for='autoOffSunrise-#{room.roomId}') at sunrise
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOffSunset', name='autoOffSunset-#{room.roomId}', id='autoOffSunset-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOffSunset, disabled = !latLongSet)
+                        label(for='autoOffSunset-#{room.roomId}') at sunset
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOff', name='autoOff-#{room.roomId}', id='autoOff-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOff)
+                        label(for='autoOff-#{room.roomId}') at anytime (learned)
+                    else if room.mimic
+                      p(class='clr-grey', style='font-size:small;')='mimic preferences ' + (!room.autoOn || !room.autoOff ? '(some automatic behaviors disabled)' : 'enabled')
+                    else if (room.autoOn || room.autoOff)
+                      p(class='clr-grey', style='font-size:small;')=(room.autoOn && room.autoOff ? 'learned when to turn on/off enabled' : 'learned when to turn ' + (room.autoOn ? 'on':'off') + ' enabled')
+                    if (room.autoOnSunrise || room.autoOffSunrise || room.autoOnSunset || room.autoOffSunset)
+                      p(class='clr-grey', style='font-size:small;')=((room.autoOnSunrise || room.autoOffSunrise) ? 'turn ' + (room.autoOnSunrise ? 'on' : 'off') + ' at sunrise' + (room.autoOnSunset || room.autoOffSunset ? ' and ':''): '') + ((room.autoOnSunset || room.autoOffSunset) ? 'turn ' + (room.autoOnSunset ? 'on' : 'off') + ' at sunset' : '') + ' enabled'
             div(data-role='nd2tab', data-tab='room-0')
               if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
                 a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>
@@ -128,7 +137,7 @@ block content
           a(href='#leftpanel', class='ui-btn ui-btn-icon-block selectHome') <i class='zmdi zmdi-home zmd-2x'></i>Select home
       else
         if cookies.userId
-          a(class='ui-btn ui-btn-icon-block newHome') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i>Add new home
+          a(class='ui-btn ui-btn-icon-block newHome') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i>Add home to continue setup
         else
           a(href='/users/signin', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-sign-in fa-2x'></i> <p>Sign in/sign up to get started</p>
 

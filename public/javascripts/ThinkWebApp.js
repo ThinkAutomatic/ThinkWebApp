@@ -825,14 +825,23 @@
     });
     $('.roomOptionCheckbox').click(function() {
       var postData;
-      if (($(this).attr('data-prop') === 'mimic') && ($(this).prop('checked'))) {
-        $('#autoOff-' + $(this).attr('data-roomId')).prop('checked', true).checkboxradio("refresh");
-        $('#autoOn-' + $(this).attr('data-roomId')).prop('checked', true).checkboxradio("refresh");
+      if (($(this).attr('data-prop') === 'autoOnSunrise') && ($(this).prop('checked'))) {
+        $('#autoOffSunrise-' + $(this).attr('data-roomId')).prop('checked', false).checkboxradio("refresh");
+      } else if (($(this).attr('data-prop') === 'autoOffSunrise') && ($(this).prop('checked'))) {
+        $('#autoOnSunrise-' + $(this).attr('data-roomId')).prop('checked', false).checkboxradio("refresh");
+      } else if (($(this).attr('data-prop') === 'autoOnSunset') && ($(this).prop('checked'))) {
+        $('#autoOffSunset-' + $(this).attr('data-roomId')).prop('checked', false).checkboxradio("refresh");
+      } else if (($(this).attr('data-prop') === 'autoOffSunset') && ($(this).prop('checked'))) {
+        $('#autoOnSunset-' + $(this).attr('data-roomId')).prop('checked', false).checkboxradio("refresh");
       }
       postData = {};
       postData['mimic'] = $('#mimic-' + $(this).attr('data-roomId')).prop('checked');
-      postData['autoOff'] = $('#autoOff-' + $(this).attr('data-roomId')).prop('checked');
       postData['autoOn'] = $('#autoOn-' + $(this).attr('data-roomId')).prop('checked');
+      postData['autoOnSunrise'] = $('#autoOnSunrise-' + $(this).attr('data-roomId')).prop('checked');
+      postData['autoOnSunset'] = $('#autoOnSunset-' + $(this).attr('data-roomId')).prop('checked');
+      postData['autoOff'] = $('#autoOff-' + $(this).attr('data-roomId')).prop('checked');
+      postData['autoOffSunrise'] = $('#autoOffSunrise-' + $(this).attr('data-roomId')).prop('checked');
+      postData['autoOffSunset'] = $('#autoOffSunset-' + $(this).attr('data-roomId')).prop('checked');
       return $.taPost('rooms/' + $(this).attr('data-roomId').toString(), postData, function(response) {
         errorCheck(response);
         return false;
