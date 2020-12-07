@@ -91,12 +91,17 @@ block content
                         for scene in room.scenes
                           - var sceneName = (scene.name ? scene.name : (scene.autoName ? scene.autoName : '') + (cookies.edit ? ' (learned)' : ''))
                           input(type='radio', class=(cookies.edit ? 'editScene sceneChoice' : 'sceneChoice'), name='scene-choice-room-#{room.roomId}', id='radio-scene-#{scene.sceneId}', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName, value='scene-#{scene.sceneId}', checked=(scene.sceneId == room.currentSceneId ? 'checked' : undefined))
-                          label(for='radio-scene-#{scene.sceneId}') <span>#{sceneName} </span>
-                            span(class='clr-#{theme}')   (#{scene.level}%)
+                          label(for='radio-scene-#{scene.sceneId}')
+                            if sceneName
+                              span #{sceneName}
+                            else
+                              span learning
+                              if room.preferredSceneId == scene.sceneId
+                                span(class='clr-#{theme}')   (favored)
+                              else
+                                span(class='clr-#{theme}')   (trial)
                             if cookies.edit
                               i(class='fa fa-pencil-square-o fa-2x editScene sceneChoice', style='padding-left:10px;', data-ajax='false', data-sceneId=scene.sceneId, data-sceneName=sceneName)
-                            else if room.preferredSceneId == scene.sceneId
-                              span(class='clr-#{theme}')   &lt;- [preferred]
                     - var latLongSet = (home && home.address && home.address.latitude && home.address.longitude ? true : false)
                     if cookies.edit
                       fieldset
@@ -121,7 +126,8 @@ block content
                         label(for='autoOnSunset-#{room.roomId}') Turn on
                         input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOffSunset', name='autoOffSunset-#{room.roomId}', id='autoOffSunset-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOffSunset, disabled = !latLongSet)
                         label(for='autoOffSunset-#{room.roomId}') Turn off
-                    else 
+                  // do not show these messages (may want to add back later)
+                    else
                       if room.mimic
                         p(class='clr-grey', style='font-size:small;')='mimic preferences ' + (!room.autoOn || !room.autoOff ? '(some automatic behaviors disabled)' : 'enabled')
                       else if (room.autoOn || room.autoOff)
