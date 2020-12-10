@@ -644,6 +644,10 @@ $(document).on 'pagecreate', ->
         $('#devicePopupTitle').text('Error').append(cache)
         $('#devicePopupDialog').popup('reposition', {positionTo: 'window'});
 
+  $('.signInSignUp').click ->
+    $.mobile.loading('hide')
+    $('#signinSignupPopupDialog').popup('open')
+
   editObject = (title, path, placeholder, dataLink) ->
     $.mobile.loading('hide')
     $('#editHomeProps').hide()
@@ -1492,7 +1496,7 @@ $(document).on 'pagecreate', ->
 
   helpStep = 0
 
-  $('.helpCancelButton').click ->
+  $('.popupCancelButton').click ->
     $("div[data-role='popup']").popup('close')
 
   $('.helpButton').click ->

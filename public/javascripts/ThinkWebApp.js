@@ -793,6 +793,10 @@
         }
       });
     });
+    $('.signInSignUp').click(function() {
+      $.mobile.loading('hide');
+      return $('#signinSignupPopupDialog').popup('open');
+    });
     editObject = function(title, path, placeholder, dataLink) {
       $.mobile.loading('hide');
       $('#editHomeProps').hide();
@@ -1754,7 +1758,7 @@
       });
     });
     helpStep = 0;
-    $('.helpCancelButton').click(function() {
+    $('.popupCancelButton').click(function() {
       return $("div[data-role='popup']").popup('close');
     });
     $('.helpButton').click(function() {
