@@ -8,10 +8,10 @@ block content
       h1(style='text-align:center;') Sign in
     div(data-role='content')
       form(class='signinForm', data-ajax='false')
-        label(for='userName') Username or email address:
-        input(type='text', id='userName', value=(cookies.userName ? cookies.userName : undefined), required)
-        label(for='password') Password:
-        input(type='password', id='password', required)
+        input(type='text', id='userName', maxlength='128', placeholder='Username or email address', value=(cookies.userName ? cookies.userName : undefined), required)
+        fieldset(data-role='controlgroup', data-type='horizontal', data-mini='true')
+          button(data-icon='eye', data-iconpos='left', class='togglePassword')
+          input(type='password', id='passwordSignin', class='passwordField', maxlength='128', placeholder='Password', required)
         input(type='submit', data-ajax='false', value='OK')
         a(href='/', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Cancel
         // a(href='/users/signup', data-ajax='false', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Signup ?

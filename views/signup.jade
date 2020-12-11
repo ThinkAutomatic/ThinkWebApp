@@ -8,13 +8,11 @@ block content
       h1(style='text-align:center;') Create Account
     div(data-role='content')
       form(class='signupForm')
-        label(for='userName') Username (optional):
-        input(type='text', id='userName', value=(cookies.userName ? cookies.userName : undefined))
-        label(for='emailAddress') Email:
-        input(type='email', id='emailAddress', value=(cookies.emailAddress ? cookies.emailAddress : undefined), required)
-        label(for='password') Password:
-        input(type='password', id='password', pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$', title='Must contain at least one number, one uppercase letter, one lowercase letter, and at least 6 or more characters', required)
-        label(for='confirmPassword') Confirm password:
-        input(type='password', id='confirmPassword', required)
+        input(type='text', id='userName', maxlength='128', placeholder='Username (optional)', value=(cookies.userName ? cookies.userName : undefined))
+        input(type='email', id='emailAddress', maxlength='128', placeholder='Email', value=(cookies.emailAddress ? cookies.emailAddress : undefined), required)
+        fieldset(data-role='controlgroup', data-type='horizontal', data-mini='true')
+          button(data-icon='eye', data-iconpos='left', class='togglePassword')
+          input(type='password', id='password', class='passwordField', maxlength='128', placeholder='Password', pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,}$', title='Must contain at least one number, one uppercase letter, one lowercase letter, and at least 6 or more characters', required)
+        input(type='password', id='confirmPassword', class='passwordField', maxlength='128', placeholder='Confirm password', required)
         input(type='submit', value='OK')
         a(href='/', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Cancel

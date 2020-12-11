@@ -759,8 +759,12 @@ $(document).on 'pagecreate', ->
           setTimeout (->
             return true
           ), 100
-        else
-          alertDialog('Error', 'Unexpected error')
+        else 
+          if isValid(response['error'] && response['error']['description'])
+            $.mobile.loading('hide')
+            alertDialog('Error', response['error']['description'])
+          else
+            alertDialog('Error', 'Unexpected error')
           return false
 
   $('.deleteObject').click (event) ->
@@ -799,6 +803,15 @@ $(document).on 'pagecreate', ->
             window.location.href = '/'
           ), 4000
         return false
+
+  passwordVisible = false
+  $('.togglePassword').click ->
+    if (passwordVisible)
+      $('.passwordField').prop('type', 'password');
+    else
+      $('.passwordField').prop('type', 'text');
+    passwordVisible = !passwordVisible
+    return false
 
   $('.emailSigninForm').submit ->
     event.preventDefault()
@@ -852,7 +865,7 @@ $(document).on 'pagecreate', ->
       path = '/devicetypes'
     postData = {}
     postData['userName'] = $('#userName').val()
-    postData['password'] = $('#password').val()
+    postData['password'] = $('#passwordSignin').val()
     $.mobile.loading('show')
     $.post '/users/signin', postData, (response) ->
       if errorCheck(response)
