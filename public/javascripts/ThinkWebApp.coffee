@@ -745,7 +745,8 @@ $(document).on 'pagecreate', ->
           postData['name'] = $('#editObjectVal').val()
       else
         postData['name'] = $('#editObjectVal').val()
-      postData['homeId'] = Number(getCookie('homeId'))
+      if getCookie('homeId')
+        postData['homeId'] = Number(getCookie('homeId'))
       $.mobile.loading('show')
       $.taPost $(this).attr('data-path'), postData, (response) ->
         if errorCheck(response)

@@ -907,7 +907,9 @@
         } else {
           postData['name'] = $('#editObjectVal').val();
         }
-        postData['homeId'] = Number(getCookie('homeId'));
+        if (getCookie('homeId')) {
+          postData['homeId'] = Number(getCookie('homeId'));
+        }
         $.mobile.loading('show');
         return $.taPost($(this).attr('data-path'), postData, function(response) {
           if (errorCheck(response)) {
