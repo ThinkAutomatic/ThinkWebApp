@@ -81,7 +81,7 @@ router.get("/confirm", function (req, res, next) {
       res.cookie("userName", response.userName, thinkApi.cookieParams);
       res.render("message", {
         title: "Email confirmed",
-        message: "Thank you for confirming your email",
+        message: "Thank you for confirming your email. You are now logged in.",
         redirect: "/",
       });
     }
@@ -90,28 +90,31 @@ router.get("/confirm", function (req, res, next) {
 
 router.post("/settings", function (req, res, next) {
   if (req.cookies && req.cookies.userId) {
-    thinkApi.postById(req, "users", req.cookies.userId, req.body, function (
-      err,
-      response
-    ) {
-      if (response && response.error) {
-        res.send(response);
-      } else {
-        thinkApi.get(req, "users/whoAmI", function (err, userInfo) {
-          if (userInfo.userId)
-            res.cookie("userId", userInfo.userId, thinkApi.cookieParams);
-          if (userInfo.userName)
-            res.cookie("userName", userInfo.userName, thinkApi.cookieParams);
-          if (userInfo.emailAddress)
-            res.cookie(
-              "emailAddress",
-              userInfo.emailAddress,
-              thinkApi.cookieParams
-            );
-          res.send(userInfo);
-        });
+    thinkApi.postById(
+      req,
+      "users",
+      req.cookies.userId,
+      req.body,
+      function (err, response) {
+        if (response && response.error) {
+          res.send(response);
+        } else {
+          thinkApi.get(req, "users/whoAmI", function (err, userInfo) {
+            if (userInfo.userId)
+              res.cookie("userId", userInfo.userId, thinkApi.cookieParams);
+            if (userInfo.userName)
+              res.cookie("userName", userInfo.userName, thinkApi.cookieParams);
+            if (userInfo.emailAddress)
+              res.cookie(
+                "emailAddress",
+                userInfo.emailAddress,
+                thinkApi.cookieParams
+              );
+            res.send(userInfo);
+          });
+        }
       }
-    });
+    );
   }
 });
 
