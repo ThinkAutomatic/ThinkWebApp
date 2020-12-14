@@ -78,7 +78,7 @@ block content
               div(data-role='nd2tab', data-tab='room-#{room.roomId}')
                 if !cookies.edit
                   if !(room.devices && room.devices.length) && cookies.userId
-                    a(data-ajax='false', class='ui-btn ui-btn-icon-block helpButton') <i class='fa fa-question-circle fa-2x'></i> <p>Help adding devices to #{room.name}</p>
+                    a(data-ajax='false', class='ui-btn ui-btn-icon-block helpButton') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> <p>Add device to #{room.name}</p>
                 if cookies.edit
                   a(data-ajax='false', class='ui-btn ui-btn-icon-block editRoom', data-roomId=room.roomId, data-roomName=room.name) <i class='fa fa-pencil-square-o fa-2x'></i> <p>Rename #{room.name}</p>
                   a(href='#room-#{room.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='zmdi zmdi-devices zmd-2x'></i> Edit #{room.name} devices
