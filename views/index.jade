@@ -105,13 +105,14 @@ block content
                     - var latLongSet = (home && home.address && home.address.latitude && home.address.longitude ? true : false)
                     if cookies.edit
                       fieldset
-                        legend(style='font-size:medium;') Mimic your patterns (learned behaviors):
-                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='mimic', name='mimic-#{room.roomId}', id='mimic-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.mimic)
-                        label(for='mimic-#{room.roomId}') As long as devices are already on (won't turn on or off)
-                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOff', name='autoOff-#{room.roomId}', id='autoOff-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOff)
-                        label(for='autoOff-#{room.roomId}') Enable turn on
+                        legend(style='font-size:medium;') Automatic behaviors:
+                        p(style='font-size:small;') (Your preferences are always being learned even if these options are turned off)
                         input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOn', name='autoOn-#{room.roomId}', id='autoOn-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOn)
-                        label(for='autoOn-#{room.roomId}') Enable turn off
+                        label(for='autoOn-#{room.roomId}') Mimic when you turn things on
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='autoOff', name='autoOff-#{room.roomId}', id='autoOff-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.autoOff)
+                        label(for='autoOff-#{room.roomId}') Mimic when you turn things off
+                        input(class='roomOptionCheckbox', data-ajax='false', type='checkbox', data-prop='mimic', name='mimic-#{room.roomId}', id='mimic-#{room.roomId}', data-roomId='#{room.roomId}', checked=room.mimic)
+                        label(for='mimic-#{room.roomId}') Mimic the adustments you make while things are on
                       if !latLongSet
                         p(class='editHome', data-ajax='false', data-homeName=home.name) (To enable sunrise/sunset first set home location by tapping this message)
                       fieldset
