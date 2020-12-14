@@ -19,12 +19,12 @@ router.get("/", function (req, res) {
     res.cookie("theme", req.query.theme, thinkApi.cookieParams);
     res.redirect("/");
   } else if (req.query && req.query.homeId) {
-    console.log("test: homeId");
     res.cookie("homeId", req.query.homeId, thinkApi.cookieParams);
     if (req.query.roomId)
       res.cookie("roomId", req.query.roomId, thinkApi.cookieParams);
     res.redirect("/");
   } else if (req.query && req.query.edit) {
+    console.log("edit");
     if (req.query.edit == "true") {
       res.cookie("edit", "true", { path: "/", maxAge: 10 * 60 * 1000 });
     } else {
@@ -47,24 +47,26 @@ router.get("/", function (req, res) {
         });
         //      } else if (req.cookies.homeId && req.cookies.userId) {
       } else if (req.cookies.homeId) {
-        thinkApi.getByIdVerbose(req, "homes", req.cookies.homeId, function (
-          err,
-          homeInfo
-        ) {
-          if (
-            !homeInfo ||
-            (homeInfo && homeInfo.error && homeInfo.error.code == 1001)
-          ) {
-            homeInfo = {};
-          }
+        thinkApi.getByIdVerbose(
+          req,
+          "homes",
+          req.cookies.homeId,
+          function (err, homeInfo) {
+            if (
+              !homeInfo ||
+              (homeInfo && homeInfo.error && homeInfo.error.code == 1001)
+            ) {
+              homeInfo = {};
+            }
 
-          res.render("index", {
-            title: "Think Home",
-            cookies: req.cookies,
-            homes: homesInfo,
-            home: homeInfo,
-          });
-        });
+            res.render("index", {
+              title: "Think Home",
+              cookies: req.cookies,
+              homes: homesInfo,
+              home: homeInfo,
+            });
+          }
+        );
       } else if (
         homesInfo.length > 0 &&
         homesInfo[0].homeId &&

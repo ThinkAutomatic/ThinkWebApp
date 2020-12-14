@@ -136,7 +136,7 @@ block content
                         p(class='clr-grey', style='font-size:small;')='scheduled to ' + ((room.autoOnSunrise || room.autoOffSunrise) ? 'turn ' + (room.autoOnSunrise ? 'on' : 'off') + ' at sunrise' + (room.autoOnSunset || room.autoOffSunset ? ' and ':''): '') + ((room.autoOnSunset || room.autoOffSunset) ? 'turn ' + (room.autoOnSunset ? 'on' : 'off') + ' at sunset' : '')
             div(data-role='nd2tab', data-tab='room-0')
               if !cookies.edit && cookies.userId && !(home.rooms && home.rooms.length)
-                a(href='/?edit=true', data-ajax='false', class='ui-btn ui-btn-icon-block') <i class='fa fa-pencil-square-o fa-2x'></i> <p>Enter edit mode to add rooms</p>
+                a(data-ajax='false', class='ui-btn ui-btn-icon-block newRoom') <i class='zmdi zmdi-plus-circle-o zmd-2x'></i> Add new room
               if cookies.edit
                 // a(data-roomId='0', data-roomName='Other', data-ajax='false', class='ui-btn ui-btn-icon-block linkDevicePopup') <i class='zmdi zmdi-link zmd-2x'></i> Link new devices not placed in a room
                 if home.devices && home.devices.length

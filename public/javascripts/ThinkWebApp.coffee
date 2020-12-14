@@ -1547,7 +1547,7 @@ $(document).on 'pagecreate', ->
       when 0
         yesNoHelpPopup('Sign in', 'You are not currently signed in. To get started you need to be signed into an account. Would you like to sign in or setup an account?')
       when 10
-        yesNoHelpPopup('Pairing', 'Do you need help "pairing" a device to your home?')
+        yesNoHelpPopup('Pairing', 'Do you need help "pairing" a device?')
       when 20, 410
         yesNoHelpPopup('Type of device', 'Is the device you need help with a Luminode Dimmer Switch?')
       when 30

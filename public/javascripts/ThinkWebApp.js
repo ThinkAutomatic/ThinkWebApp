@@ -1814,7 +1814,7 @@
         case 0:
           return yesNoHelpPopup('Sign in', 'You are not currently signed in. To get started you need to be signed into an account. Would you like to sign in or setup an account?');
         case 10:
-          return yesNoHelpPopup('Pairing', 'Do you need help "pairing" a device to your home?');
+          return yesNoHelpPopup('Pairing', 'Do you need help "pairing" a device?');
         case 20:
         case 410:
           return yesNoHelpPopup('Type of device', 'Is the device you need help with a Luminode Dimmer Switch?');
