@@ -27,7 +27,7 @@ block content
             input(data-ajax='false', type='text', data-propName='modes', name='prop-' + propCount, id='prop-' + propCount, value=modeStr, disabled=true)
 
           each value, key in deviceTypeInfo
-            if key != 'actionTypes' && key != 'modes' && key != 'preLinkInstructions' && key != 'postLinkInstructions' && typeof(value) != 'boolean' && value != 'true' && value != 'false'              
+            if key != 'ownerUserId' && key != 'actionTypes' && key != 'modes' && key != 'preLinkInstructions' && key != 'postLinkInstructions' && typeof(value) != 'boolean' && value != 'true' && value != 'false'              
               - propCount++
               label(for='prop-' + propCount) #{key}:
               input(class='deviceTypeField', data-ajax='false', type='text', data-propName=key, name='prop-' + propCount, id='prop-' + propCount, value=value, disabled=(key == 'deviceTypeUuid' ? undefined : disabled))
@@ -58,5 +58,5 @@ block content
           a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='editDeviceTypeSaveDraft') <i class='fa fa-save fa-2x'></i> <p>Save as Draft</p>
 
           if !disabled
-            a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='editDeviceTypeRegister') <i class='zmdi zmdi-cloud-upload zmd-2x'></i> <p>Register "#{deviceTypeInfo.name}"</p>
+            a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='editDeviceTypeRegister') <i class='zmdi zmdi-cloud-upload zmd-2x'></i> <p>Register or Update "#{deviceTypeInfo.name}"</p>
             a(data-ajax='false', class='ui-btn ui-btn-icon-block', id='deleteDeviceTypeSubmit') <i class='fa fa-trash fa-2x'></i> <p>Delete "#{deviceTypeInfo.name}"</p>

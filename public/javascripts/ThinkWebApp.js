@@ -1669,15 +1669,18 @@
     });
     loadDeviceTypeWithChanges = function(cb) {
       return getDeviceTypeInfo(function() {
-        $('.deviceTypeField').each(function() {
+        var itemCount;
+        itemCount = $('.deviceTypeField').length;
+        return $('.deviceTypeField').each(function() {
           if ($(this).is('input:text') || $(this).is('textarea')) {
-            return deviceType[$(this).attr('data-propName')] = $(this).val();
+            deviceType[$(this).attr('data-propName')] = $(this).val();
           } else if ($(this).is('input:checkbox')) {
-            return deviceType[$(this).attr('data-propName')] = $(this).prop('checked');
+            deviceType[$(this).attr('data-propName')] = $(this).is(':checked');
+          }
+          if (--itemCount === 0) {
+            cb();
           }
         });
-        //          deviceType[$(this).attr('data-propName')] = $(this).prop('checked').toString()
-        return cb();
       });
     };
     $('#editDeviceTypeSaveDraft').click(function() {
@@ -1705,6 +1708,7 @@
         path = 'deviceTypes/' + deviceType['deviceTypeUuid'];
       }
       $.mobile.loading('show');
+      deviceType['created'] = void 0;
       return $.taPost(path, deviceType, function(response) {
         if (isValid(response['error'] && response['error']['message'])) {
           $.mobile.loading('hide');
@@ -1756,7 +1760,7 @@
         return confirmDialog('Confirm', prompt, function() {
           $.mobile.loading('show');
           if (deviceType['deviceTypeUuid']) {
-            return $.taDelete('deviceTypes/' + deviceType['deviceTypeUuid'] + '/draft', function(response) {
+            return $.taDelete('deviceTypes/' + deviceType['deviceTypeUuid'], function(response) {
               window.location.href = '/devicetypes';
               return true;
             });

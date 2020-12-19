@@ -1409,14 +1409,16 @@ $(document).on 'pagecreate', ->
 
   loadDeviceTypeWithChanges = (cb) ->
     getDeviceTypeInfo( () ->
+      itemCount = $('.deviceTypeField').length
       $('.deviceTypeField').each( ->
         if $(this).is('input:text') || $(this).is('textarea')
           deviceType[$(this).attr('data-propName')] = $(this).val()
         else if $(this).is('input:checkbox')
-          deviceType[$(this).attr('data-propName')] = $(this).prop('checked')
-#          deviceType[$(this).attr('data-propName')] = $(this).prop('checked').toString()
+          deviceType[$(this).attr('data-propName')] = $(this).is(':checked')
+        if (--itemCount == 0)
+          cb()
+          return
       )
-      cb()
     )
 
   $('#editDeviceTypeSaveDraft').click ->
@@ -1443,6 +1445,7 @@ $(document).on 'pagecreate', ->
       path = 'deviceTypes/' + deviceType['deviceTypeUuid']
 
     $.mobile.loading('show')
+    deviceType['created'] = undefined
     $.taPost path, deviceType, (response) ->
       if isValid(response['error'] && response['error']['message'])
         $.mobile.loading('hide')
@@ -1451,7 +1454,6 @@ $(document).on 'pagecreate', ->
       else
         window.location.href = '/devicetypes'
         return true
-
 
   $('#editDeviceTypeRegister').click ->
     loadDeviceTypeWithChanges( () ->
@@ -1493,7 +1495,7 @@ $(document).on 'pagecreate', ->
         ->
           $.mobile.loading('show')
           if deviceType['deviceTypeUuid']
-            $.taDelete 'deviceTypes/' + deviceType['deviceTypeUuid'] + '/draft',  (response) ->
+            $.taDelete 'deviceTypes/' + deviceType['deviceTypeUuid'],  (response) ->
               window.location.href = '/devicetypes'
               return true
           else if deviceType['draftId']
