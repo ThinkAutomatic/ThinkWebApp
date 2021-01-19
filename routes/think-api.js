@@ -189,6 +189,9 @@ module.exports = {
     console.log("test");
     apiPost(req, "users/signup", credentials, cb);
   },
+  o2auth: function (req, credentials, cb) {
+    apiPost(req, "users/o2/auth", credentials, cb);
+  },
   signin: function (req, credentials, cb) {
     apiPost(req, "users/signin", credentials, cb);
   },

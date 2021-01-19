@@ -1028,8 +1028,9 @@
       }
     });
     $('.signinForm').submit(function() {
-      var path, postData;
+      var dataQuery, path, postData, postPath;
       event.preventDefault();
+      postPath = '/users/signin';
       path = '/';
       if (getCookie('editDeviceTypes')) {
         path = '/devicetypes';
@@ -1038,29 +1039,31 @@
       postData['userName'] = $('#userName').val();
       postData['password'] = $('#passwordSignin').val();
       $.mobile.loading('show');
-      return $.post('/users/signin', postData, function(response) {
-        var dataQuery;
+      if ($('.signinForm').attr('data-query')) {
+        dataQuery = JSON.parse($('.signinForm').attr('data-query'));
+        if (dataQuery && dataQuery.redirect_uri) {
+          postPath = '/users/o2/auth';
+          path = dataQuery.redirect_uri + '?state=';
+          path += dataQuery.state ? dataQuery.state : 'unknown';
+        }
+      }
+      return $.post(postPath, postData, function(response) {
         if (response && isValid(response['error'] && response['error']['message'])) {
           $.mobile.loading('hide');
           $('.signinErrorMessage').text(response['error']['message'] + ' - ' + response['error']['description']);
           $('.signinErrorDiv').show();
           $('.signinSuccessDiv').hide();
         } else {
-          if ($('.signinForm').attr('data-query')) {
-            dataQuery = JSON.parse($('.signinForm').attr('data-query'));
-            if (dataQuery && dataQuery.redirect_uri) {
-              path = dataQuery.redirect_uri + '?state=';
-              path += dataQuery.state ? dataQuery.state : 'unknown';
-              path += '&code=';
-              path += response && response.accessToken ? response.accessToken : 'unknown';
-            }
+          if (dataQuery && dataQuery.redirect_uri) {
+            path += '&code=';
+            path += response && response.code ? response.code : 'unknown';
           }
           $('.signinErrorDiv').hide();
           $('.signinSuccessMessage').text('Sign-in successful');
           $('.signinSuccessDiv').show();
           setTimeout((function() {
             return window.location.href = path;
-          }), 2000);
+          }), 500);
         }
         return false;
       });

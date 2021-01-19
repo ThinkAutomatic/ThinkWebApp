@@ -849,6 +849,7 @@ $(document).on 'pagecreate', ->
 
   $('.signinForm').submit ->
     event.preventDefault()
+    postPath = '/users/signin'
     path = '/'
     if getCookie('editDeviceTypes')
       path = '/devicetypes'
@@ -856,26 +857,28 @@ $(document).on 'pagecreate', ->
     postData['userName'] = $('#userName').val()
     postData['password'] = $('#passwordSignin').val()
     $.mobile.loading('show')
-    $.post '/users/signin', postData, (response) ->
+    if $('.signinForm').attr('data-query')
+      dataQuery = JSON.parse($('.signinForm').attr('data-query'))
+      if dataQuery && dataQuery.redirect_uri
+        postPath = '/users/o2/auth'
+        path = dataQuery.redirect_uri + '?state='
+        path += if dataQuery.state then dataQuery.state else 'unknown'
+    $.post postPath, postData, (response) ->
       if response && isValid(response['error'] && response['error']['message'])
         $.mobile.loading('hide')
         $('.signinErrorMessage').text(response['error']['message'] + ' - ' + response['error']['description'])
         $('.signinErrorDiv').show()
         $('.signinSuccessDiv').hide()
       else
-        if $('.signinForm').attr('data-query')
-          dataQuery = JSON.parse($('.signinForm').attr('data-query'))
-          if dataQuery && dataQuery.redirect_uri
-            path = dataQuery.redirect_uri + '?state='
-            path += if dataQuery.state then dataQuery.state else 'unknown'
-            path += '&code='
-            path += if response && response.accessToken then response.accessToken else 'unknown'
+        if dataQuery && dataQuery.redirect_uri
+          path += '&code='
+          path += if response && response.code then response.code else 'unknown'
         $('.signinErrorDiv').hide()
         $('.signinSuccessMessage').text('Sign-in successful')
         $('.signinSuccessDiv').show()
         setTimeout (->
           window.location.href = path
-        ), 2000
+        ), 500
       return false
 
   $('.requestEmailSignin').click ->

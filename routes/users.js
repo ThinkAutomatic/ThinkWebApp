@@ -46,6 +46,12 @@ router.post("/signin", function (req, res, next) {
   });
 });
 
+router.post("/o2/auth", function (req, res, next) {
+  thinkApi.o2auth(req, req.body, function (err, authResponse) {
+    res.send(authResponse);
+  });
+});
+
 /* GET signout page. */
 router.get("/signout", function (req, res, next) {
   thinkApi.signout(req, function (err) {
