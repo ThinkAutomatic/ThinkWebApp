@@ -814,18 +814,6 @@ $(document).on 'pagecreate', ->
     passwordVisible = !passwordVisible
     return false
 
-  $('.emailSigninForm').submit ->
-    event.preventDefault()
-    postData = {}
-    postData['userName'] = $('#userName').val()
-
-    $.mobile.loading('show')
-    $.taPost 'users/emailsignin', postData, (response) ->
-      $.mobile.loading('hide')
-      if errorCheck(response)
-        alertDialog('Success', 'Email signin link sent')
-      return false
-
 # this is not working for some reason
 #  $('.selectHome').click ->
 #    setTimeout (->
@@ -869,14 +857,48 @@ $(document).on 'pagecreate', ->
     postData['password'] = $('#passwordSignin').val()
     $.mobile.loading('show')
     $.post '/users/signin', postData, (response) ->
-      if errorCheck(response)
-        window.location.href = path
-        return true
+      if response && isValid(response['error'] && response['error']['message'])
+        $.mobile.loading('hide')
+        $('.signinErrorMessage').text(response['error']['message'] + ' - ' + response['error']['description'])
+        $('.signinErrorDiv').show()
+        $('.signinSuccessDiv').hide()
       else
+        if $('.signinForm').attr('data-query')
+          dataQuery = JSON.parse($('.signinForm').attr('data-query'))
+          if dataQuery && dataQuery.redirect_uri
+            path = dataQuery.redirect_uri + '?state='
+            path += if dataQuery.state then dataQuery.state else 'unknown'
+            path += '&code='
+            path += if response && response.accessToken then response.accessToken else 'unknown'
+        $('.signinErrorDiv').hide()
+        $('.signinSuccessMessage').text('Sign-in successful')
+        $('.signinSuccessDiv').show()
         setTimeout (->
-          window.location.href = '/users/signin'
-        ), 3000
-        return false
+          window.location.href = path
+        ), 2000
+      return false
+
+  $('.requestEmailSignin').click ->
+    if $('#userName').val() == ''
+      $('.signinErrorMessage').text('Must enter username or email address')
+      $('.signinErrorDiv').show()
+      $('.signinSuccessDiv').hide()
+      return false
+
+    postData = {}
+    postData['userName'] = $('#userName').val()
+    $.mobile.loading('show')
+    $.taPost 'users/emailsignin', postData, (response) ->
+      $.mobile.loading('hide')
+      if response && isValid(response['error'] && response['error']['message'])
+        $('.signinErrorMessage').text(response['error']['message'] + ' - ' + response['error']['description'])
+        $('.signinErrorDiv').show()
+        $('.signinSuccessDiv').hide()
+      else
+        $('.signinErrorDiv').hide()
+        $('.signinSuccessMessage').text('Sign-in email sent')
+        $('.signinSuccessDiv').show()
+      return false    
 
   $('.signoutButton').click ->
     window.location.href = '/users/signout'

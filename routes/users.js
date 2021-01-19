@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 var thinkApi = require("./think-api");
 
-/* GET signup page. */
 router.get("/signup", function (req, res, next) {
   res.render("signup", { cookies: req.cookies });
 });
@@ -28,9 +27,12 @@ router.get("/registered", function (req, res, next) {
   });
 });
 
-/* GET signin page. */
 router.get("/signin", function (req, res, next) {
-  res.render("signin", { cookies: req.cookies });
+  res.render("signin", {
+    cookies: req.cookies,
+    query: req.query,
+    title: "Think Automatic Sign-in",
+  });
 });
 
 router.post("/signin", function (req, res, next) {
@@ -54,18 +56,7 @@ router.get("/signout", function (req, res, next) {
   });
 });
 
-/*
-router.post("/signout", function (req, res, next) {
-  thinkApi.signout(req, function (err) {
-    res.clearCookie("accessToken", thinkApi.cookieParams);
-    res.clearCookie("userId", thinkApi.cookieParams);
-    res.clearCookie("userName", thinkApi.cookieParams);
-    res.end();
-  });
-});
-*/
-
-router.get("/confirm", function (req, res, next) {
+var handleConfirm = function (req, res, signIn) {
   const params = { verificationToken: req.query.verificationToken };
   thinkApi.post(req, "/users/confirm", params, function (err, response) {
     if (response && response.error) {
@@ -73,7 +64,7 @@ router.get("/confirm", function (req, res, next) {
         cookies: req.cookies,
         title: response.error.message,
         message: response.error.description,
-        redirect: "/users/emailsignin",
+        redirect: "/users/signin",
       });
     } else {
       res.cookie("accessToken", response.accessToken, thinkApi.cookieParams);
@@ -81,11 +72,21 @@ router.get("/confirm", function (req, res, next) {
       res.cookie("userName", response.userName, thinkApi.cookieParams);
       res.render("message", {
         title: "Email confirmed",
-        message: "Thank you for confirming your email. You are now logged in.",
+        message:
+          (signIn ? "" : "Thank you for confirming your email. ") +
+          "You are now signed in.",
         redirect: "/",
       });
     }
   });
+};
+
+router.get("/confirm", function (req, res, next) {
+  handleConfirm(req, res, false);
+});
+
+router.get("/confirm/signin", function (req, res, next) {
+  handleConfirm(req, res, true);
 });
 
 router.post("/settings", function (req, res, next) {
@@ -146,18 +147,6 @@ router.get("/settings", function (req, res, next) {
       }
     });
   }
-});
-
-/*
-router.post("/emailsignin", function (req, res, next) {
-  thinkApi.post(req, "users/emailsignin", req.body, function (err, response) {
-    res.send(response);
-  });
-});
-*/
-
-router.get("/emailsignin", function (req, res, next) {
-  res.render("emailsignin", { cookies: req.cookies, title: "Email Signin" });
 });
 
 module.exports = router;

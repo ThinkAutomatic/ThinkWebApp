@@ -991,20 +991,6 @@
       passwordVisible = !passwordVisible;
       return false;
     });
-    $('.emailSigninForm').submit(function() {
-      var postData;
-      event.preventDefault();
-      postData = {};
-      postData['userName'] = $('#userName').val();
-      $.mobile.loading('show');
-      return $.taPost('users/emailsignin', postData, function(response) {
-        $.mobile.loading('hide');
-        if (errorCheck(response)) {
-          alertDialog('Success', 'Email signin link sent');
-        }
-        return false;
-      });
-    });
     // this is not working for some reason
     //  $('.selectHome').click ->
     //    setTimeout (->
@@ -1053,15 +1039,55 @@
       postData['password'] = $('#passwordSignin').val();
       $.mobile.loading('show');
       return $.post('/users/signin', postData, function(response) {
-        if (errorCheck(response)) {
-          window.location.href = path;
-          return true;
+        var dataQuery;
+        if (response && isValid(response['error'] && response['error']['message'])) {
+          $.mobile.loading('hide');
+          $('.signinErrorMessage').text(response['error']['message'] + ' - ' + response['error']['description']);
+          $('.signinErrorDiv').show();
+          $('.signinSuccessDiv').hide();
         } else {
+          if ($('.signinForm').attr('data-query')) {
+            dataQuery = JSON.parse($('.signinForm').attr('data-query'));
+            if (dataQuery && dataQuery.redirect_uri) {
+              path = dataQuery.redirect_uri + '?state=';
+              path += dataQuery.state ? dataQuery.state : 'unknown';
+              path += '&code=';
+              path += response && response.accessToken ? response.accessToken : 'unknown';
+            }
+          }
+          $('.signinErrorDiv').hide();
+          $('.signinSuccessMessage').text('Sign-in successful');
+          $('.signinSuccessDiv').show();
           setTimeout((function() {
-            return window.location.href = '/users/signin';
-          }), 3000);
-          return false;
+            return window.location.href = path;
+          }), 2000);
         }
+        return false;
+      });
+    });
+    $('.requestEmailSignin').click(function() {
+      var postData;
+      if ($('#userName').val() === '') {
+        $('.signinErrorMessage').text('Must enter username or email address');
+        $('.signinErrorDiv').show();
+        $('.signinSuccessDiv').hide();
+        return false;
+      }
+      postData = {};
+      postData['userName'] = $('#userName').val();
+      $.mobile.loading('show');
+      return $.taPost('users/emailsignin', postData, function(response) {
+        $.mobile.loading('hide');
+        if (response && isValid(response['error'] && response['error']['message'])) {
+          $('.signinErrorMessage').text(response['error']['message'] + ' - ' + response['error']['description']);
+          $('.signinErrorDiv').show();
+          $('.signinSuccessDiv').hide();
+        } else {
+          $('.signinErrorDiv').hide();
+          $('.signinSuccessMessage').text('Sign-in email sent');
+          $('.signinSuccessDiv').show();
+        }
+        return false;
       });
     });
     $('.signoutButton').click(function() {

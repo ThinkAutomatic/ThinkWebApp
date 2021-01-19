@@ -3,16 +3,24 @@ extends layout
 block content
   div(data-role='page')
     div(data-role='header')
-      a(href='/', class='ui-btn ui-btn-left')
-        i(class='fa fa-arrow-circle-left')
-      h1(style='text-align:center;') Sign in
+      h1(style='text-align:center;')= title
     div(data-role='content')
-      form(class='signinForm', data-ajax='false')
-        input(type='text', id='userName', maxlength='128', placeholder='Username or email address', value=(cookies.userName ? cookies.userName : undefined), required)
+      div(class='signinErrorDiv', hidden='true', style='background-color: #F8D0C8;')
+        p &nbsp;
+        i(class='fa fa-fw fa-times-circle-o fa-2x')
+        span(class='signinErrorMessage', style='font-size: 100%;') error
+        p &nbsp;
+        p
+      div(class='signinSuccessDiv', hidden='true', style='background-color: #01EC7F;')
+        p &nbsp;
+        i(class='fa fa-fw fa-thumbs-o-up fa-2x')
+        span(class='signinSuccessMessage', style='font-size: 100%;') Sign-in successful
+        p &nbsp;
+        p
+      form(class='signinForm', data-ajax='false', data-query=(query ? JSON.stringify(query) : undefined))
+        input(type='text', id='userName', maxlength='128', placeholder='Username or email address', value=(cookies && cookies.userName ? cookies.userName : undefined), required)
         fieldset(data-role='controlgroup', data-type='horizontal', data-mini='true')
           button(data-icon='eye', data-iconpos='left', class='togglePassword')
           input(type='password', id='passwordSignin', class='passwordField', maxlength='128', placeholder='Password', required)
-        input(type='submit', data-ajax='false', value='OK')
-        a(href='/', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Cancel
-        // a(href='/users/signup', data-ajax='false', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Sign up ?
-        a(href='/users/emailsignin', data-ajax='false', data-role='button', data-inline='true', class='ui-btn ui-btn-primary') Sign in via email (forgot password) ?
+        input(type='submit', data-ajax='false', value='Sign-in')
+        a(class='ui-btn ui-btn-primary requestEmailSignin') Request sign-in email (forgot password) ?

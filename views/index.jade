@@ -29,8 +29,12 @@ block content
                   a(class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button')<span class=\'clr-grey\'>No devices in #{room.name}</span>
 
     div(data-role='header', data-position='inline')
-      a(href='#room-#{cookies.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-right showDevices')
-        i(class='zmdi zmdi-more-vert')
+      if cookies.userId
+        a(href='#room-#{cookies.roomId}-device-panel', data-ajax='false', class='ui-btn ui-btn-right showDevices')
+          i(class='zmdi zmdi-more-vert')
+      else
+        a(class='ui-btn ui-btn-right signInSignUp') <i class='fa fa-sign-in'></i>
+
       a(href='#leftpanel', class='ui-btn ui-btn-left')
         i(class='zmdi zmdi-menu')
       if cookies.edit && home && home.name
