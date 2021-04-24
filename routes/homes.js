@@ -9,6 +9,8 @@ router.get("/", function (req, res, next) {
       console.log(err);
       res.cookie("accessToken", req.query.homeKey, thinkApi.cookieParams);
       res.cookie("homeId", req.query.homeId, thinkApi.cookieParams);
+      if (req.query.roomId)
+        res.cookie("roomId", req.query.roomId, thinkApi.cookieParams);
       res.clearCookie("userId", thinkApi.cookieParams);
       res.clearCookie("userName", thinkApi.cookieParams);
       res.redirect("/");
