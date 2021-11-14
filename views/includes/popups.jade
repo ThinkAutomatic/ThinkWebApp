@@ -21,11 +21,12 @@ div(data-role='popup', id='devicePopupDialog', data-reload='true', style='min-wi
       p Device does not process commands
     form
       div(id='devicePopupControls')
-      div(data-role='collapsible', id='devicePopupSettings')
-        h3 Settings
-        div(id='deviceDirectUrlDiv', style='text-align: center')
-          a(href='#', target="_blank", data-ajax='false', id='deviceDirectUrl') Direct device link
-        fieldset(data-role='controlgroup', id='devicePopupSettingControls')
+      if cookies.edit
+        div(data-role='collapsible', id='devicePopupSettings')
+          h3 Settings
+          div(id='deviceDirectUrlDiv', style='text-align: center')
+            a(href='#', target="_blank", data-ajax='false', id='deviceDirectUrl') Direct device link
+          fieldset(data-role='controlgroup', id='devicePopupSettingControls')
 
 <!-- editObject popup -->
 div(data-role='popup', id='editObjectPopupDialog', style='min-width:20em;')

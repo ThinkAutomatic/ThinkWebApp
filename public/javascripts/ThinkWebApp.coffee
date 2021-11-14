@@ -380,7 +380,6 @@ $(document).on 'pagecreate', ->
    
   linkDevicePopup = () ->
     $.taGet 'devices/discover', (deviceInfoArray) ->
-      $('#linkDeviceName').hide()
       if deviceInfoArray.length == 0
         $('#linkDeviceType').show()
         $('#linkDeviceSelectDiv').hide()
