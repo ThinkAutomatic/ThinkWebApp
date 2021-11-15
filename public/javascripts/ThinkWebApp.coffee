@@ -713,11 +713,14 @@ $(document).on 'pagecreate', ->
     ), 100
 
   $(document).on 'change','.flipControl', (event) ->
+    deviceId = $(this).attr('data-deviceId').toString()
     postData = {}
     postData[$(this).attr('data-actionName')] = $(this).find('option:selected').val();
-    $.taPost 'devices/' + $(this).attr('data-deviceId').toString(), postData, (response) ->
-      errorCheck(response)
-      return false
+    $.taPost 'devices/' + deviceId, postData, (response) ->
+      if errorCheck(response)
+        $.taPost 'commands/' + deviceId, postData, (response) ->
+          errorCheck(response)
+          return false
 
   $('#editObjectPopupDialog').on 'popupafterclose', () -> 
     if $('#editObjectSubmit').attr('data-link') == 'true'

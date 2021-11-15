@@ -866,12 +866,17 @@
       }), 100);
     });
     $(document).on('change', '.flipControl', function(event) {
-      var postData;
+      var deviceId, postData;
+      deviceId = $(this).attr('data-deviceId').toString();
       postData = {};
       postData[$(this).attr('data-actionName')] = $(this).find('option:selected').val();
-      return $.taPost('devices/' + $(this).attr('data-deviceId').toString(), postData, function(response) {
-        errorCheck(response);
-        return false;
+      return $.taPost('devices/' + deviceId, postData, function(response) {
+        if (errorCheck(response)) {
+          return $.taPost('commands/' + deviceId, postData, function(response) {
+            errorCheck(response);
+            return false;
+          });
+        }
       });
     });
     $('#editObjectPopupDialog').on('popupafterclose', function() {
