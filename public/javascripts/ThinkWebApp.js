@@ -486,6 +486,7 @@
     });
     linkDevicePopup = function() {
       $.taGet('devices/discover', function(deviceInfoArray) {
+        $('#linkDeviceName').hide();
         if (deviceInfoArray.length === 0) {
           $('#linkDeviceType').show();
           return $('#linkDeviceSelectDiv').hide();
